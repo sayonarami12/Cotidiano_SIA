@@ -1,86 +1,72 @@
-# Cotidiano Fragrance System - Local Setup Guide (XAMPP)
+Step 1: Install XAMPP
+Download and install XAMPP from the official website: apachefriends.org.
 
-This guide provides step-by-step instructions on how to set up the Cotidiano Fragrance web system on a new computer using XAMPP. It covers exporting the existing database, transferring the files, and configuring the new environment.
+Step 2: Prepare the Project Files
+Download the Cotidiano project file.
 
-## 📋 Prerequisites
-*   **XAMPP** installed on the new computer (Download from [apachefriends.org](https://www.apachefriends.org/)).
-*   A web browser (Chrome, Firefox, Edge, etc.).
-*   The project folder (`cotidiano`).
-*   The exported MySQL database file (`.sql`).
+If it is in a .zip format, extract (unzip) the folder first.
 
----
+Copy the entire cotidiano folder and paste it into your XAMPP htdocs directory.
 
-## Phase 1: Prepare the Files on YOUR Computer
-Before moving to the new computer, you need to ensure you have a clean, working copy of your project and a proper MySQL database backup.
+Typical path: C:\xampp\htdocs\
 
-### 1. Export your working database (The MySQL version)
-1. Open your browser and go to `http://localhost/phpmyadmin`.
-2. Click on **`database_cotidiano`** on the left sidebar.
-3. Click the **Export** tab at the top.
-4. Leave the settings as **"Quick"** and format as **"SQL"**. Click **Export**.
-5. Save this file (usually named `database_cotidiano.sql`) into your project folder. **This is now your master database file. Do NOT use the old `_mssql.sql` file.**
+Final path should look like: C:\xampp\htdocs\cotidiano\
 
-### 2. Ensure your `config.php` is MySQL-ready
-Open `api/config.php` in your code editor (like VS Code) and make sure it looks exactly like this:
+Step 3: Start XAMPP
+Open the XAMPP Control Panel.
 
-```php
-<?php
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST");
-header("Content-Type: application/json");
+Click Start next to Apache.
 
-$host = 'localhost';
-$dbname = 'database_cotidiano';
-$username = 'root';
-$password = '';
+Click Start next to MySQL.
 
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch(PDOException $e) {
-    http_response_code(500);
-    die(json_encode(["error" => "Connection failed: " . $e->getMessage()]));
-}
-?>
+⚠️ Important: Make sure both modules turn green. If MySQL turns red or refuses to start, you have a port conflict (see the Troubleshooting section below).
 
-1. Install XAMPP
-Download and install XAMPP from apachefriends.org.
-
-Open the XAMPP Control Panel and start Apache and MySQL.
-
-2. Place the Project Files
-Take your zipped cotidiano folder and extract it directly into C:\xampp\htdocs\ on the new computer.
-
-Your path should now look like: C:\xampp\htdocs\cotidiano\index.html.
-
-3. Import the Database
-Open your browser and go to http://localhost/phpmyadmin.
+Step 4: Create the Database
+Open your web browser and go to: http://localhost/phpmyadmin
 
 On the left sidebar, click New.
 
-Type database_cotidiano in the database name field and click Create.
+In the "Database name" field, type exactly: database_cotidiano
 
-Click on your new database_cotidiano database, then click the Import tab at the top.
+Click the Create button.
 
-Click Choose File and select the database_cotidiano.sql file you exported in Phase 1.
+Step 5: Import the Database
+Click on your newly created database_cotidiano database on the left sidebar.
 
-Scroll down and click Go. You should see a success message, and all your tables should appear on the left.
+At the top of the screen, click the Import tab.
 
-4. Test the Connection
-In your browser, go to: http://localhost/cotidiano/api/test_connection.php
+Under "File to import", click Choose File.
 
-If it says "Connected successfully to MySQL!", you are good to go.
+Navigate to your project folder (C:\xampp\htdocs\cotidiano\) and select the database file (usually named database_cotidiano.sql).
 
-If it says "could not find driver":
+Scroll to the bottom and click the Go button.
 
-Open C:\xampp\php\php.ini.
+You should see a green success message, and the database tables will appear on the left.
 
-Search for ;extension=pdo_mysql.
+If you get an error while importing, go back to the XAMPP Control Panel and double-check that MySQL is started and glowing green.
 
-Remove the semicolon so it becomes extension=pdo_mysql.
+Step 6: Launch the Website
+Open a new tab in your browser.
 
-Save the file, restart Apache in the XAMPP Control Panel, and refresh the page.
+Go to: http://localhost/cotidiano
 
-5. Launch the System
-Open your browser and go to:
-http://localhost/cotidiano/index.html
+You should now see the Cotidiano website live on your screen!
+
+
+Troubleshooting Common Issues
+Problem: MySQL won't start (turns red in XAMPP)
+This usually means another program is using the database port.
+
+Quick Fix: Open Task Manager (Ctrl+Shift+Esc), find mysqld.exe, right-click it, and select End Task. Then click Start on MySQL in XAMPP again.
+
+Alternative Fix: Change XAMPP's MySQL port to 3307 in the XAMPP Config, and update the port in your project's api/config.php file.
+
+Problem: The website loads but shows a "Database Connection Error"
+
+Make sure you completed Step 4 and Step 5 correctly.
+
+Check that the api/config.php file in your project folder has the correct database name (database_cotidiano), username (root), and password (blank).
+
+Problem: The website shows no products
+
+If the database imported successfully but no products show up, run the seed script by visiting this link in your browser: http://localhost/cotidiano/api/seed_products.php
