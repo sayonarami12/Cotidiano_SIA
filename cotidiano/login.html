@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cotidiano Fragrance — Sign In</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+
+        /* =====================
+           RESET & VARIABLES
+        ===================== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --black:    #111111;
+            --white:    #ffffff;
+            --gray-100: #f5f5f5;
+            --gray-200: #e8e8e8;
+            --gray-400: #aaaaaa;
+            --gray-600: #666666;
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body:    'DM Sans', system-ui, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--white);
+            color: var(--black);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+
+        /* =====================
+           LOGO — fixed center top
+           Stays in place regardless of form height
+        ===================== */
+        .login-logo {
+            position: fixed;
+            top: 36px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        .login-logo img {
+            height: 42px;
+            width: auto;
+            display: block;
+        }
+
+
+        /* =====================
+           PAGE LAYOUT
+           Starts below the fixed logo, grows downward
+        ===================== */
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 140px 24px 72px;
+        }
+
+
+        /* =====================
+           FORM CARD
+        ===================== */
+        .login-card {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        /* Form header */
+        .form-header {
+            margin-bottom: 36px;
+            text-align: center;
+        }
+
+        .form-header h1 {
+            font-family: var(--font-display);
+            font-size: 42px;
+            font-weight: 500;
+            color: var(--black);
+            letter-spacing: -0.01em;
+            margin-bottom: 10px;
+        }
+
+        .form-header p {
+            font-size: 15px;
+            color: var(--gray-600);
+            line-height: 1.6;
+        }
+
+
+        /* =====================
+           TABS
+        ===================== */
+        .form-tabs {
+            display: flex;
+            justify-content: center;
+            border-bottom: 1px solid var(--gray-200);
+            margin-bottom: 36px;
+        }
+
+        .form-tab {
+            font-size: 13px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding-bottom: 14px;
+            margin: 0 20px;
+            color: var(--gray-400);
+            cursor: pointer;
+            border-bottom: 1px solid transparent;
+            margin-bottom: -1px;
+            transition: color 0.2s, border-color 0.2s;
+            user-select: none;
+        }
+
+        .form-tab.active {
+            color: var(--black);
+            border-bottom-color: var(--black);
+        }
+
+        .form-tab:hover { color: var(--black); }
+
+
+        /* =====================
+           FORM PANELS
+           Both panels stay in the DOM at all times.
+           The inactive one is hidden with visibility so
+           it does NOT contribute to layout height —
+           only the active panel pushes the page down.
+           This means switching tabs only ever EXTENDS
+           the page downward, never jumps content up.
+        ===================== */
+        .form-panels {
+            position: relative;
+        }
+
+        .form-panel {
+            display: none;
+        }
+
+        .form-panel.active {
+            display: block;
+        }
+
+
+        /* =====================
+           FORM FIELDS
+        ===================== */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            font-size: 12px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--gray-600);
+        }
+
+        .form-group input {
+            font-family: var(--font-body);
+            height: 50px;
+            border: 1px solid var(--gray-200);
+            border-radius: 2px;
+            background: var(--gray-100);
+            padding: 0 16px;
+            font-size: 15px;
+            color: var(--black);
+            outline: none;
+            transition: border-color 0.2s, background 0.2s;
+            width: 100%;
+        }
+
+        .form-group input:focus {
+            border-color: var(--black);
+            background: var(--white);
+        }
+
+
+        /* =====================
+           SUBMIT BUTTON
+        ===================== */
+        .form-btn {
+            width: 100%;
+            height: 52px;
+            background: var(--black);
+            color: var(--white);
+            border: none;
+            border-radius: 2px;
+            font-family: var(--font-body);
+            font-size: 11px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            margin-top: 10px;
+            margin-bottom: 32px;
+        }
+
+        .form-btn:hover { opacity: 0.82; }
+
+
+        /* =====================
+           OR DIVIDER
+        ===================== */
+        .form-divider {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+
+        .form-divider-line {
+            flex: 1;
+            height: 1px;
+            background: var(--gray-200);
+        }
+
+        .form-divider-text {
+            font-size: 11px;
+            color: var(--gray-400);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+
+        /* =====================
+           SWITCH LINK
+        ===================== */
+        .form-switch {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-600);
+        }
+
+        .form-switch a {
+            color: var(--black);
+            border-bottom: 1px solid var(--black);
+            padding-bottom: 1px;
+            transition: opacity 0.2s;
+        }
+
+        .form-switch a:hover { opacity: 0.6; }
+
+        .password-toggle {
+            display: block;
+            margin: -4px 0 18px auto;
+            padding: 0;
+            border: none;
+            background: none;
+            color: #555;
+            font-family: var(--font-body);
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .password-toggle:hover { color: #111; }
+
+        .name-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+
+        /* =====================
+           ERROR MESSAGE
+        ===================== */
+        .form-error {
+            display: none;
+            font-size: 13px;
+            color: #cc0000;
+            background: #fff5f5;
+            border: 1px solid #ffd0d0;
+            border-radius: 2px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+        }
+
+        .form-error.visible { display: block; }
+
+        .login-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: rgba(17, 17, 17, 0.52);
+        }
+
+        .login-modal[hidden] { display: none; }
+
+        .login-modal__card {
+            width: min(100%, 380px);
+            padding: 28px;
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 3px;
+            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        .login-modal__title {
+            margin-bottom: 10px;
+            font-family: var(--font-display);
+            font-size: 24px;
+        }
+
+        .login-modal__message {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .login-modal__button {
+            display: block;
+            margin: 24px 0 0 auto;
+            padding: 10px 16px;
+            border: 1px solid #111;
+            border-radius: 2px;
+            color: #fff;
+            background: #111;
+            font-family: var(--font-body);
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- =====================
+         LOGO — fixed center top
+    ===================== -->
+    <div class="login-logo">
+        <a href="index.html">
+            <img src="assets/images/cotidiano_logo.png" alt="Cotidiano Fragrance">
+        </a>
+    </div>
+
+
+    <!-- =====================
+         PAGE
+    ===================== -->
+    <div class="login-page">
+        <div class="login-card">
+
+            <div class="form-header">
+                <h1>Welcome back</h1>
+                <p>Sign in to your account to continue shopping.</p>
+            </div>
+
+            <!-- Tabs -->
+            <div class="form-tabs" id="form-tabs">
+                <div class="form-tab active" data-tab="signin">Sign In</div>
+                <div class="form-tab"        data-tab="register">Register</div>
+            </div>
+
+            <div class="form-panels">
+
+                <!-- =====================
+                     SIGN IN FORM
+                ===================== -->
+                <div class="form-panel active" id="panel-signin">
+
+                    <div class="form-error" id="signin-error"></div>
+
+                    <div class="form-group">
+                        <label for="signin-email">Email address</label>
+                        <input
+                            type="email"
+                            id="signin-email"
+                            placeholder="you@email.com"
+                            autocomplete="email">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signin-password">Password</label>
+                        <input
+                            type="password"
+                            id="signin-password"
+                            placeholder="••••••••"
+                            autocomplete="current-password">
+                    </div>
+
+                            <button type="button" class="password-toggle" id="toggle-signin-password">Show password</button>
+
+                    <button class="form-btn" id="signin-btn">Sign In</button>
+
+                    <div class="form-divider">
+                        <div class="form-divider-line"></div>
+                        <div class="form-divider-text">or</div>
+                        <div class="form-divider-line"></div>
+                    </div>
+
+                    <p class="form-switch">
+                        Don't have an account? <a href="#" data-switch="register">Create one</a>
+                    </p>
+
+                </div>
+
+
+                <!-- =====================
+                     REGISTER FORM
+                ===================== -->
+                <div class="form-panel" id="panel-register">
+
+                    <div class="form-error" id="register-error"></div>
+
+                    <div class="name-grid">
+                        <div class="form-group">
+                            <label for="reg-first-name">First name</label>
+                            <input
+                                type="text"
+                                id="reg-first-name"
+                                placeholder="Juan"
+                                autocomplete="given-name">
+                        </div>
+                        <div class="form-group">
+                            <label for="reg-last-name">Last name</label>
+                            <input
+                                type="text"
+                                id="reg-last-name"
+                                placeholder="Dela Cruz"
+                                autocomplete="family-name">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reg-email">Email address</label>
+                        <input
+                            type="email"
+                            id="reg-email"
+                            placeholder="you@email.com"
+                            autocomplete="email">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reg-password">Password</label>
+                        <input
+                            type="password"
+                            id="reg-password"
+                            placeholder="••••••••"
+                            autocomplete="new-password">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reg-confirm">Confirm password</label>
+                        <input
+                            type="password"
+                            id="reg-confirm"
+                            placeholder="••••••••"
+                            autocomplete="new-password">
+                    </div>
+
+                            <button type="button" class="password-toggle" id="toggle-register-password">Show passwords</button>
+
+                    <button class="form-btn" id="register-btn">Create Account</button>
+
+                    <div class="form-divider">
+                        <div class="form-divider-line"></div>
+                        <div class="form-divider-text">or</div>
+                        <div class="form-divider-line"></div>
+                    </div>
+
+                    <p class="form-switch">
+                        Already have an account? <a href="#" data-switch="signin">Sign in</a>
+                    </p>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="login-modal" id="registration-modal" hidden>
+        <div class="login-modal__card" role="dialog" aria-modal="true" aria-labelledby="registration-modal-title">
+            <h2 class="login-modal__title" id="registration-modal-title">Account created</h2>
+            <p class="login-modal__message">Your account was created successfully. You can now sign in.</p>
+            <button class="login-modal__button" id="registration-modal-button">Continue to Sign In</button>
+        </div>
+    </div>
+
+
+    <script>
+    // ================================================================
+    // TAB SWITCHING
+    // ================================================================
+    document.getElementById("form-tabs").addEventListener("click", (e) => {
+        const tab = e.target.closest(".form-tab");
+        if (!tab) return;
+        switchTab(tab.dataset.tab);
+    });
+
+    document.querySelectorAll("[data-switch]").forEach(link => {
+        link.addEventListener("click", (e) => {
+            e.preventDefault();
+            switchTab(link.dataset.switch);
+        });
+    });
+
+    function switchTab(name) {
+        document.querySelectorAll(".form-tab").forEach(t =>
+            t.classList.toggle("active", t.dataset.tab === name));
+        document.querySelectorAll(".form-panel").forEach(p =>
+            p.classList.toggle("active", p.id === `panel-${name}`));
+    }
+
+
+    // ================================================================
+    // SIGN IN
+    // ================================================================
+    document.getElementById("signin-btn").addEventListener("click", handleSignIn);
+
+    document.getElementById("toggle-signin-password").addEventListener("click", (event) => {
+        const passwordField = document.getElementById("signin-password");
+        const shouldShow = passwordField.type === "password";
+        passwordField.type = shouldShow ? "text" : "password";
+        event.currentTarget.textContent = shouldShow ? "Hide password" : "Show password";
+    });
+
+    async function handleSignIn() {
+        const email    = document.getElementById("signin-email").value.trim();
+        const password = document.getElementById("signin-password").value;
+
+        if (!email || !password) {
+            showError("signin-error", "Please enter your email and password.");
+            return;
+        }
+
+        hideError("signin-error");
+
+        // Admin shortcut
+        if (email === "admin@cotidiano.com" && password === "admin123") {
+            localStorage.setItem("user", JSON.stringify({
+                firstName: "Admin", lastName: "", email, isAdmin: true
+            }));
+            window.location.href = "admin.html";
+            return;
+        }
+
+        try {
+            const res  = await fetch("http://localhost/cotidiano/api/login.php", {
+                method:  "POST",
+                headers: { "Content-Type": "application/json" },
+                body:    JSON.stringify({ email, password })
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                showError("signin-error", data.error);
+                return;
+            }
+
+            localStorage.setItem("user", JSON.stringify(data.user));
+            window.location.href = "index.html";
+
+        } catch (err) {
+            showError("signin-error", "Something went wrong. Please try again.");
+        }
+    }
+
+
+    // ================================================================
+    // REGISTER
+    // ================================================================
+    document.getElementById("register-btn").addEventListener("click", handleRegister);
+
+    document.getElementById("toggle-register-password").addEventListener("click", (event) => {
+        const passwordFields = [
+            document.getElementById("reg-password"),
+            document.getElementById("reg-confirm")
+        ];
+        const shouldShow = passwordFields[0].type === "password";
+        passwordFields.forEach(field => { field.type = shouldShow ? "text" : "password"; });
+        event.currentTarget.textContent = shouldShow ? "Hide passwords" : "Show passwords";
+    });
+
+    async function handleRegister() {
+        const firstName = document.getElementById("reg-first-name").value.trim();
+        const lastName  = document.getElementById("reg-last-name").value.trim();
+        const email    = document.getElementById("reg-email").value.trim();
+        const password = document.getElementById("reg-password").value;
+        const confirm  = document.getElementById("reg-confirm").value;
+
+        if (!firstName || !lastName || !email || !password || !confirm) {
+            showError("register-error", "Please fill in all fields.");
+            return;
+        }
+        if (password !== confirm) {
+            showError("register-error", "Passwords do not match.");
+            return;
+        }
+        if (password.length < 8) {
+            showError("register-error", "Password must be at least 8 characters.");
+            return;
+        }
+
+        hideError("register-error");
+
+        try {
+            const res  = await fetch("http://localhost/cotidiano/api/register.php", {
+                method:  "POST",
+                headers: { "Content-Type": "application/json" },
+                body:    JSON.stringify({ firstName, lastName, email, password })
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                showError("register-error", data.error);
+                return;
+            }
+
+            document.getElementById("registration-modal").hidden = false;
+
+        } catch (err) {
+            showError("register-error", "Something went wrong. Please try again.");
+        }
+    }
+
+    document.getElementById("registration-modal-button").addEventListener("click", () => {
+        document.getElementById("registration-modal").hidden = true;
+        switchTab("signin");
+        document.getElementById("signin-email").focus();
+    });
+
+
+    // ================================================================
+    // HELPERS
+    // ================================================================
+    function showError(id, message) {
+        const el = document.getElementById(id);
+        el.textContent = message;
+        el.classList.add("visible");
+    }
+
+    function hideError(id) {
+        document.getElementById(id).classList.remove("visible");
+    }
+</script>
+
+</body>
+</html>

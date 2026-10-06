@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cotidiano Fragrance — Cart</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+
+        /* =====================
+           RESET & VARIABLES
+        ===================== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --black:    #111111;
+            --white:    #ffffff;
+            --gray-100: #f5f5f5;
+            --gray-200: #e8e8e8;
+            --gray-400: #aaaaaa;
+            --gray-600: #666666;
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body:    'DM Sans', system-ui, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--white);
+            color: var(--black);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        img { display: block; }
+        a   { text-decoration: none; color: inherit; }
+
+
+        /* =====================
+           NAVBAR
+        ===================== */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-200);
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 48px;
+        }
+
+        .navbar__logo img {
+            height: 28px;
+            width: auto;
+        }
+
+        .navbar__links {
+            display: flex;
+            gap: 36px;
+            list-style: none;
+        }
+
+        .navbar__links a {
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--gray-600);
+            transition: color 0.2s;
+        }
+
+        .navbar__links a:hover,
+        .navbar__links a.active { color: var(--black); }
+
+        .navbar__actions {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .navbar__actions a {
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gray-600);
+            transition: color 0.2s;
+        }
+
+        .navbar__actions a:hover { color: var(--black); }
+
+        .cart-link {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            color: var(--black) !important;
+            font-weight: 500;
+        }
+
+        .cart-count {
+            background: var(--black);
+            color: var(--white);
+            font-size: 10px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        /* =====================
+           PAGE WRAPPER
+        ===================== */
+        .page-wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 48px;
+        }
+
+
+        /* =====================
+           PAGE HEADER
+        ===================== */
+        .page-header {
+            padding: 40px 0 28px;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+        }
+
+        .page-header h1 {
+            font-family: var(--font-display);
+            font-size: 40px;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+        }
+
+        .page-header span {
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gray-400);
+        }
+
+
+        /* =====================
+           CART LAYOUT
+        ===================== */
+        .cart-body {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 0;
+            min-height: calc(100vh - 260px);
+            padding-bottom: 100px;
+        }
+
+
+        /* =====================
+           LEFT COLUMN
+           Contains cart items + shipping form
+        ===================== */
+        .cart-left {
+            border-right: 1px solid var(--gray-200);
+            padding-right: 48px;
+        }
+
+
+        /* =====================
+           CART ITEMS
+        ===================== */
+        .cart-item {
+            display: grid;
+            grid-template-columns: 90px 1fr auto;
+            gap: 20px;
+            align-items: center;
+            padding: 24px 0;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .cart-item__image {
+            aspect-ratio: 3 / 4;
+            overflow: hidden;
+            background: #f0ece6;
+            border-radius: 2px;
+        }
+
+        .cart-item__image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .cart-item__info {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .cart-item__name {
+            font-family: var(--font-display);
+            font-size: 20px;
+            font-weight: 400;
+        }
+
+        .cart-item__family {
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gray-400);
+        }
+
+        .cart-item__size {
+            font-size: 11px;
+            color: var(--gray-400);
+            margin-top: 2px;
+        }
+
+        .cart-item__price {
+            font-size: 16px;
+            font-weight: 500;
+            margin-top: 10px;
+        }
+
+        .cart-item__actions {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 14px;
+        }
+
+        .qty-control {
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--gray-200);
+            border-radius: 2px;
+        }
+
+        .qty-btn {
+            width: 32px;
+            height: 32px;
+            background: none;
+            border: none;
+            font-size: 16px;
+            color: var(--black);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+            font-family: var(--font-body);
+        }
+
+        .qty-btn:hover { background: var(--gray-100); }
+
+        .qty-value {
+            font-size: 13px;
+            width: 32px;
+            text-align: center;
+            font-weight: 500;
+        }
+        .qty-btn:disabled {
+             opacity: 0.3;
+             cursor: not-allowed;
+        }
+
+        .remove-btn {
+            font-size: 10px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--gray-400);
+            cursor: pointer;
+            border: none;
+            border-bottom: 1px solid var(--gray-200);
+            padding-bottom: 1px;
+            background: none;
+            font-family: var(--font-body);
+            transition: color 0.2s, border-color 0.2s;
+        }
+
+        .remove-btn:hover {
+            color: var(--black);
+            border-color: var(--black);
+        }
+
+
+        /* =====================
+           SHIPPING ADDRESS FORM
+        ===================== */
+        .shipping-form {
+            margin-top: 40px;
+        }
+
+        .shipping-form__title {
+            font-size: 10px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--gray-400);
+            margin-bottom: 24px;
+        }
+
+        /* Two-column grid for form fields */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        /* Full-width fields span both columns */
+        .form-grid .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .form-group label {
+            font-size: 10px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--gray-600);
+        }
+
+        .form-group input,
+        .form-group select {
+            font-family: var(--font-body);
+            height: 44px;
+            border: 1px solid var(--gray-200);
+            border-radius: 2px;
+            background: var(--gray-100);
+            padding: 0 14px;
+            font-size: 14px;
+            color: var(--black);
+            outline: none;
+            transition: border-color 0.2s, background 0.2s;
+            width: 100%;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--black);
+            background: var(--white);
+        }
+
+        /* Error state for invalid fields */
+        .form-group input.error {
+            border-color: #cc0000;
+            background: #fff5f5;
+        }
+
+        /* Address form error banner */
+        .form-error {
+            display: none;
+            font-size: 12px;
+            color: #cc0000;
+            background: #fff5f5;
+            border: 1px solid #ffd0d0;
+            border-radius: 2px;
+            padding: 10px 14px;
+            margin-top: 16px;
+        }
+
+        .form-error.visible { display: block; }
+
+
+        /* =====================
+           EMPTY STATE
+        ===================== */
+        .cart-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            padding: 80px 0;
+            text-align: center;
+            width: 100%;
+        }
+
+        .cart-empty p {
+            font-family: var(--font-display);
+            font-size: 24px;
+            font-weight: 400;
+            color: var(--gray-400);
+        }
+
+        .cart-empty a {
+            font-size: 10px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--black);
+            border-bottom: 1px solid var(--black);
+            padding-bottom: 2px;
+            transition: opacity 0.2s;
+        }
+
+        .cart-empty a:hover { opacity: 0.6; }
+
+
+        /* =====================
+           ORDER SUMMARY
+        ===================== */
+        .cart-summary {
+            padding: 32px 0 32px 40px;
+            position: sticky;
+            top: 60px;
+            height: fit-content;
+        }
+
+        .summary-title {
+            font-size: 10px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--gray-400);
+            margin-bottom: 24px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .summary-label { font-size: 13px; color: var(--gray-600); }
+        .summary-value { font-size: 13px; color: var(--black); font-weight: 500; }
+
+        .summary-divider {
+            border: none;
+            border-top: 1px solid var(--gray-200);
+            margin: 20px 0;
+        }
+
+        .summary-total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .summary-total-label {
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .summary-total-value {
+            font-family: var(--font-body);
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            height: 50px;
+            background: var(--black);
+            color: var(--white);
+            border: none;
+            border-radius: 2px;
+            font-family: var(--font-body);
+            font-size: 10px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            margin-top: 24px;
+            margin-bottom: 16px;
+        }
+
+        .checkout-btn:hover    { opacity: 0.82; }
+        .checkout-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+        .continue-link {
+            display: block;
+            text-align: center;
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gray-400);
+            transition: color 0.2s;
+        }
+
+        .continue-link:hover { color: var(--black); }
+
+
+        /* =====================
+           ORDER CONFIRMATION MODAL
+        ===================== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.visible { display: flex; }
+
+        .modal {
+            background: var(--white);
+            width: 100%;
+            max-width: 480px;
+            padding: 48px;
+            border-radius: 2px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .modal-check {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            border: 1.5px solid var(--black);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-family: var(--font-display);
+            font-size: 32px;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+            margin-bottom: 8px;
+        }
+
+        .modal-order-id {
+            font-size: 10px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--gray-400);
+            margin-bottom: 28px;
+        }
+
+        .modal-items {
+            width: 100%;
+            border-top: 1px solid var(--gray-200);
+            border-bottom: 1px solid var(--gray-200);
+            padding: 16px 0;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .modal-item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+        }
+
+        .modal-item-name  { color: var(--black); }
+        .modal-item-qty   { color: var(--gray-400); font-size: 11px; margin-left: 6px; }
+        .modal-item-price { font-weight: 500; }
+
+        .modal-total-row {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .modal-total-label {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .modal-total-value {
+            font-family: var(--font-body);
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .modal-status {
+            font-size: 12px;
+            color: var(--gray-600);
+            line-height: 1.7;
+            margin-bottom: 32px;
+        }
+
+        .modal-btn {
+            width: 100%;
+            height: 48px;
+            background: var(--black);
+            color: var(--white);
+            border: none;
+            border-radius: 2px;
+            font-family: var(--font-body);
+            font-size: 10px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .modal-btn:hover { opacity: 0.82; }
+
+
+        /* =====================
+           FOOTER
+        ===================== */
+        .footer {
+            background: var(--black);
+            padding: 32px 48px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+        }
+
+        .footer__links {
+            display: flex;
+            justify-content: center;
+            gap: 28px;
+            list-style: none;
+            padding-bottom: 20px;
+        }
+
+        .footer__links a {
+            font-size: 13px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #555;
+            transition: color 0.2s;
+        }
+
+        .footer__links a:hover { color: var(--white); }
+
+        .footer__copy {
+            font-size: 10px;
+            color: #444;
+            letter-spacing: 0.04em;
+            text-align: center;
+            width: 100%;
+            padding-top: 20px;
+            border-top: 1px solid #222;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- =====================
+         NAVBAR
+    ===================== -->
+    <nav class="navbar">
+        <a href="index.html" class="navbar__logo">
+            <img src="assets/images/cotidiano_logo.png" alt="Cotidiano Fragrance">
+        </a>
+        <ul class="navbar__links">
+            <li><a href="index.html">Shop</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+        <div class="navbar__actions">
+            <a href="account.html">Account</a>
+            <a href="cart.html" class="cart-link">
+                Cart <span class="cart-count" id="cart-count">0</span>
+            </a>
+        </div>
+    </nav>
+
+
+    <!-- =====================
+         PAGE CONTENT
+    ===================== -->
+    <div class="page-wrapper">
+
+        <div class="page-header">
+            <h1>Your Cart</h1>
+            <span id="item-count"></span>
+        </div>
+
+        <div class="cart-body" id="cart-body">
+
+            <!-- Left column: items + shipping form -->
+            <div class="cart-left" id="cart-left-col"></div>
+
+            <!-- Right column: order summary -->
+            <div class="cart-summary" id="cart-summary-col"></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================
+         ORDER CONFIRMATION MODAL
+    ===================== -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal">
+            <div class="modal-check">✓</div>
+            <div class="modal-title">Order Placed!</div>
+            <div class="modal-order-id" id="modal-order-id"></div>
+            <div class="modal-items"    id="modal-items"></div>
+            <div class="modal-total-row">
+                <span class="modal-total-label">Total</span>
+                <span class="modal-total-value" id="modal-total"></span>
+            </div>
+            <p class="modal-status">
+                Your order is now being processed.<br>
+                You can track it anytime under <strong>My Orders</strong>.
+            </p>
+            <button class="modal-btn" onclick="location.href='account.html'">
+                View My Orders
+            </button>
+        </div>
+    </div>
+
+
+    <!-- =====================
+         FOOTER
+    ===================== -->
+    <footer class="footer">
+        <ul class="footer__links">
+            <li><a href="index.html">Shop</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="#">Privacy</a></li>
+        </ul>
+        <p class="footer__copy">© 2026 Cotidiano Fragrance. All rights reserved.</p>
+    </footer>
+
+
+    <script>
+        // ================================================================
+        // STORAGE HELPERS
+        // ================================================================
+        function getCartStorageKey() {
+            const user = JSON.parse(localStorage.getItem("user") || "null");
+            if (!user?.customerID) return "cart_guest";
+
+            const customerKey = `cart_customer_${user.customerID}`;
+            const guestCart = localStorage.getItem("cart_guest");
+            if (!localStorage.getItem(customerKey) && guestCart) {
+                localStorage.setItem(customerKey, guestCart);
+                localStorage.removeItem("cart_guest");
+            }
+            const hasCustomerCart = Object.keys(localStorage).some(key => key.startsWith("cart_customer_"));
+            const legacyCart = localStorage.getItem("cart");
+            if (!localStorage.getItem(customerKey) && !hasCustomerCart && legacyCart) {
+                localStorage.setItem(customerKey, legacyCart);
+                localStorage.removeItem("cart");
+            }
+            return customerKey;
+        }
+        function getCart()          { return JSON.parse(localStorage.getItem(getCartStorageKey()) || "[]"); }
+        function saveCart(cart)     { localStorage.setItem(getCartStorageKey(), JSON.stringify(cart)); }
+        function getOrders()        { return JSON.parse(localStorage.getItem("orders") || "[]"); }
+        function saveOrders(orders) { localStorage.setItem("orders", JSON.stringify(orders)); }
+
+        function generateOrderId() {
+            const next = (getOrders().length + 1).toString().padStart(4, "0");
+            return `ORD-${next}`;
+        }
+
+        let savedShippingAddress = null;
+
+
+        // ================================================================
+        // CART COUNT
+        // ================================================================
+        function updateCartCount() {
+            const total = getCart().reduce((sum, i) => sum + i.quantity, 0);
+            document.getElementById("cart-count").textContent = total;
+        }
+
+
+        // ================================================================
+        // RENDER
+        // ================================================================
+        function render() {
+            const cart        = getCart();
+            const leftCol     = document.getElementById("cart-left-col");
+            const summaryCol  = document.getElementById("cart-summary-col");
+            const itemCountEl = document.getElementById("item-count");
+            const cartBody    = document.getElementById("cart-body");
+
+            // ── Save form values before any innerHTML wipe ──────────────
+            const FIELDS = ["addr-name","addr-phone","addr-zip","addr-street","addr-city","addr-province"];
+            const saved  = {};
+            FIELDS.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) saved[id] = el.value;
+            });
+            const savedPaymentMethod = document.getElementById("payment-method")?.value || "Credit Card";
+            const savedAmountPaid = document.getElementById("amount-paid")?.value || "";
+            const errorVisible = document.getElementById("addr-error")?.classList.contains("visible");
+            const paymentErrorVisible = document.getElementById("payment-error")?.classList.contains("visible");
+            // ────────────────────────────────────────────────────────────
+
+            const totalQty = cart.reduce((sum, i) => sum + i.quantity, 0);
+            itemCountEl.textContent = totalQty > 0
+                ? `${totalQty} item${totalQty !== 1 ? "s" : ""}`
+                : "";
+
+            // --- Empty state ---
+            if (cart.length === 0) {
+                cartBody.style.display    = "block";
+                leftCol.style.borderRight = "none";
+                leftCol.innerHTML         = `
+                    <div class="cart-empty">
+                        <p>Your cart is empty.</p>
+                        <a href="index.html">Continue Shopping</a>
+                    </div>
+                `;
+                summaryCol.innerHTML = "";
+                return;
+            }
+
+            // Reset cart body to grid if it was changed
+            cartBody.style.display        = "";
+            cartBody.style.justifyContent = "";
+            leftCol.style.borderRight     = "";
+
+            // --- Cart items ---
+            leftCol.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <div class="cart-item__image">
+                        <img src="${item.image}" alt="${item.name}"
+                             onerror="this.style.display='none'">
+                    </div>
+                    <div class="cart-item__info">
+                        <p class="cart-item__name">${item.name}</p>
+                        <p class="cart-item__family">${item.family}</p>
+                        <p class="cart-item__size">${item.size}</p>
+                        <p class="cart-item__price">₱${(item.price * item.quantity).toLocaleString()}</p>
+                    </div>
+                    <div class="cart-item__actions">
+                        <div class="qty-control">
+                            <button class="qty-btn"
+                                    onclick="changeQty('${item.id}', -1)"
+                                    aria-label="Decrease quantity">−</button>
+                            <span class="qty-value">${item.quantity}</span>
+                            <button class="qty-btn"
+                                     onclick="changeQty('${item.id}', 1)"
+                                      aria-label="Increase quantity"
+                                       ${item.stock !== undefined && item.quantity >= item.stock ? 'disabled title="Only ' + item.stock + ' left in stock"' : ''}>+</button>
+                        </div>
+                        <button class="remove-btn" onclick="removeItem('${item.id}')">
+                            Remove
+                        </button>
+                    </div>
+                </div>
+            `).join("");
+
+            // --- Order summary + shipping form ---
+            const total = cart.reduce((sum, i) => sum + i.price * i.quantity, 0);
+
+            summaryCol.innerHTML = `
+                <p class="summary-title">Order Summary</p>
+
+                ${cart.map(item => `
+                    <div class="summary-row">
+                        <span class="summary-label">
+                            ${item.name}
+                            <span style="font-size:11px; color:var(--gray-400); margin-left:4px;">x${item.quantity}</span>
+                        </span>
+                        <span class="summary-value">₱${(item.price * item.quantity).toLocaleString()}</span>
+                    </div>
+                `).join("")}
+
+                <hr class="summary-divider">
+
+                <div class="summary-total-row">
+                    <span class="summary-total-label">Total</span>
+                    <span class="summary-total-value">₱${total.toLocaleString()}</span>
+                </div>
+
+                <div class="form-group" style="margin-top:24px;">
+                    <label for="payment-method">Payment Method</label>
+                    <select id="payment-method">
+                        <option value="Credit Card">Credit Card</option>
+                        <option value="GCash">GCash</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin-top:16px;">
+                    <label for="amount-paid">Exact Amount to Pay</label>
+                    <input type="number" id="amount-paid" min="0" step="0.01"
+                           placeholder="Enter exact amount to pay" inputmode="decimal">
+                    <div class="form-error" id="payment-error" role="alert" aria-live="polite">
+                        Amount must match the total exactly.
+                    </div>
+                </div>
+
+                <div class="shipping-form">
+                    <p class="shipping-form__title">Shipping Address</p>
+                    <div class="form-grid">
+
+                        <div class="form-group full-width">
+                            <label for="addr-name">Full name</label>
+                            <input type="text" id="addr-name"
+                                   placeholder="Juan Dela Cruz"
+                                   autocomplete="name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="addr-phone">Phone number</label>
+                            <input type="tel" id="addr-phone"
+                                   placeholder="09XX XXX XXXX"
+                                   autocomplete="tel">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="addr-zip">ZIP code</label>
+                            <input type="text" id="addr-zip"
+                                   placeholder="1000"
+                                   maxlength="10">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="addr-street">Street address</label>
+                            <input type="text" id="addr-street"
+                                   placeholder="123 Rizal St., Brgy. San Antonio"
+                                   autocomplete="street-address">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="addr-city">City / Municipality</label>
+                            <input type="text" id="addr-city"
+                                   placeholder="Quezon City"
+                                   autocomplete="address-level2">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="addr-province">Province</label>
+                            <input type="text" id="addr-province"
+                                   placeholder="Metro Manila"
+                                   autocomplete="address-level1">
+                        </div>
+
+                    </div>
+
+                    <div class="form-error" id="addr-error">
+                        Please fill in all shipping address fields.
+                    </div>
+                </div>
+
+                <button class="checkout-btn" onclick="handleCheckout()">
+                    Place Order
+                </button>
+
+                <a href="index.html" class="continue-link">Continue Shopping</a>
+            `;
+
+            // ── Restore form values after innerHTML rebuild ──────────────
+            FIELDS.forEach(id => {
+                const el = document.getElementById(id);
+                if (el && Object.prototype.hasOwnProperty.call(saved, id)) el.value = saved[id];
+            });
+            document.getElementById("payment-method").value = savedPaymentMethod;
+            document.getElementById("amount-paid").value = savedAmountPaid;
+            document.getElementById("amount-paid").addEventListener("input", () => {
+                const amountValue = document.getElementById("amount-paid").value.trim();
+                const amountCents = Math.round(parseFloat(amountValue) * 100);
+                const totalCents = Math.round(total * 100);
+                const isExactAmount = amountValue !== "" && Number.isFinite(amountCents) && amountCents === totalCents;
+                document.getElementById("payment-error").classList.toggle("visible", !isExactAmount);
+                document.getElementById("amount-paid").classList.toggle("error", !isExactAmount);
+            });
+            if (!Object.prototype.hasOwnProperty.call(saved, "addr-name") && savedShippingAddress) {
+                const user = JSON.parse(localStorage.getItem("user") || "null");
+                document.getElementById("addr-name").value = [user?.firstName, user?.lastName].filter(Boolean).join(" ");
+                document.getElementById("addr-phone").value = savedShippingAddress.phoneNumber || user?.phoneNumber || "";
+                document.getElementById("addr-street").value = savedShippingAddress.street || "";
+                document.getElementById("addr-city").value = savedShippingAddress.city || "";
+                document.getElementById("addr-province").value = savedShippingAddress.province || "";
+                document.getElementById("addr-zip").value = savedShippingAddress.zip || "";
+            }
+            if (errorVisible) document.getElementById("addr-error")?.classList.add("visible");
+            if (paymentErrorVisible) document.getElementById("payment-error")?.classList.add("visible");
+            // ────────────────────────────────────────────────────────────
+        }
+
+
+        // ================================================================
+        // QUANTITY CONTROLS
+        // ================================================================
+        function changeQty(productId, delta) {
+            const cart = getCart();
+            const item = cart.find(i => i.id === productId);
+            if (!item) return;
+            
+            const newQty = item.quantity + delta;
+            
+            // Check stock limits (if stock info is available)
+            if (item.stock !== undefined && newQty > item.stock) {
+                // Show error message
+                const message = document.createElement('div');
+                message.textContent = `Only ${item.stock} in stock`;
+                message.style.cssText = 'position:fixed; top:20px; left:50%; transform:translateX(-50%); background:#dc2626; color:white; padding:12px 24px; border-radius:4px; font-size:14px; z-index:10000;';
+                document.body.appendChild(message);
+                setTimeout(() => message.remove(), 2000);
+                return;
+            }
+            
+            item.quantity = newQty;
+            if (item.quantity <= 0) { removeItem(productId); return; }
+            saveCart(cart);
+            updateCartCount();
+            render();
+        }
+
+
+        // ================================================================
+        // REMOVE ITEM
+        // ================================================================
+        function removeItem(productId) {
+            saveCart(getCart().filter(i => i.id !== productId));
+            updateCartCount();
+            render();
+        }
+
+
+        // ================================================================
+        // CHECKOUT
+        // ----------------------------------------------------------------
+        // TODO (Backend team): Replace the localStorage saveOrders() call
+        // with a fetch() POST to your orders API endpoint.
+        //
+        // The order object already contains the full shippingAddress so
+        // no separate endpoint is needed — just map the fields to your
+        // orders table columns.
+        //
+        // Example replacement:
+        //   const res = await fetch('/api/orders', {
+        //       method: 'POST',
+        //       headers: { 'Content-Type': 'application/json' },
+        //       body: JSON.stringify(order)
+        //   });
+        //   if (res.ok) { showModal(order); saveCart([]); updateCartCount(); }
+        // ================================================================
+        function handleCheckout() {
+            const cart = getCart();
+            if (cart.length === 0) return;
+
+            // Redirect to login if no user is signed in
+            const user = JSON.parse(localStorage.getItem("user") || "null");
+            if (!user) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            // Read address fields
+            const name     = document.getElementById("addr-name").value.trim();
+            const phone    = document.getElementById("addr-phone").value.trim();
+            const zip      = document.getElementById("addr-zip").value.trim();
+            const street   = document.getElementById("addr-street").value.trim();
+            const city     = document.getElementById("addr-city").value.trim();
+            const province = document.getElementById("addr-province").value.trim();
+            const paymentMethod = document.getElementById("payment-method").value;
+            const amountPaidValue = document.getElementById("amount-paid").value.trim();
+
+            // Validate — all fields required
+            const errorEl = document.getElementById("addr-error");
+            if (!name || !phone || !zip || !street || !city || !province) {
+                errorEl.classList.add("visible");
+
+                // Highlight empty fields in red
+                ["addr-name", "addr-phone", "addr-zip",
+                 "addr-street", "addr-city", "addr-province"].forEach(id => {
+                    const el = document.getElementById(id);
+                    el.classList.toggle("error", !el.value.trim());
+                });
+
+                // Scroll to the form so user sees the error
+                document.getElementById("addr-name").scrollIntoView({ behavior: "smooth", block: "center" });
+                return;
+            }
+
+            errorEl.classList.remove("visible");
+
+            const total   = cart.reduce((sum, i) => sum + i.price * i.quantity, 0);
+            const amountPaid = parseFloat(amountPaidValue);
+            const paymentError = document.getElementById("payment-error");
+            const amountInput = document.getElementById("amount-paid");
+            if (!amountPaidValue || !Number.isFinite(amountPaid) || Math.round(amountPaid * 100) !== Math.round(total * 100)) {
+                paymentError.classList.add("visible");
+                amountInput.classList.add("error");
+                amountInput.scrollIntoView({ behavior: "smooth", block: "center" });
+                return;
+            }
+            paymentError.classList.remove("visible");
+            amountInput.classList.remove("error");
+
+            // Build order object with shipping address attached
+            const order = {
+                customerID: user.customerID || 1,
+                items:   cart,
+                total:   total,
+                paymentMethod,
+                amountPaid,
+                shippingAddress: { name, phone, street, city, province, zip }
+            };
+
+            // Send to backend API
+            fetch("http://localhost/cotidiano/api/create_order.php", {
+                method:  "POST",
+                headers: { "Content-Type": "application/json" },
+                body:    JSON.stringify(order)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    // Show confirmation modal
+                    const confirmOrder = {
+                        orderId: data.orderID,
+                        items:   cart,
+                        total:   total
+                    };
+                    showModal(confirmOrder);
+                    
+                    // Clear cart
+                    saveCart([]);
+                    updateCartCount();
+                } else {
+                    alert("Order failed: " + (data.error || "Unknown error"));
+                }
+            })
+            .catch(err => {
+                console.error("Order error:", err);
+                alert("Failed to place order. Please try again.");
+            });
+        }
+
+
+        // ================================================================
+        // MODAL
+        // ================================================================
+        function showModal(order) {
+            document.getElementById("modal-order-id").textContent = order.orderId;
+
+            document.getElementById("modal-items").innerHTML = order.items.map(i => `
+                <div class="modal-item-row">
+                    <span>
+                        <span class="modal-item-name">${i.name}</span>
+                        <span class="modal-item-qty">x${i.quantity}</span>
+                    </span>
+                    <span class="modal-item-price">₱${(i.price * i.quantity).toLocaleString()}</span>
+                </div>
+            `).join("");
+
+            document.getElementById("modal-total").textContent =
+                `₱${order.total.toLocaleString()}`;
+
+            document.getElementById("modal-overlay").classList.add("visible");
+            render();
+        }
+
+
+        // ================================================================
+        // INIT
+        // ================================================================
+       async function init() {
+         try {
+        const res      = await fetch("http://localhost/cotidiano/api/products.php");
+        const products = await res.json();
+
+        const cart = getCart();
+        let changed = false;
+
+        cart.forEach(item => {
+            const fresh = products.find(p => parseInt(p.productID) === parseInt(item.id));
+            if (fresh && parseInt(fresh.stockQuantity) !== item.stock) {
+                item.stock = parseInt(fresh.stockQuantity);
+                changed = true;
+            }
+        });
+
+        if (changed) saveCart(cart);
+     } catch (e) {
+        console.warn("Could not refresh stock:", e);
+     }
+
+         const user = JSON.parse(localStorage.getItem("user") || "null");
+         if (user?.customerID) {
+             try {
+                 const addressResponse = await fetch(`http://localhost/cotidiano/api/address.php?customerID=${encodeURIComponent(user.customerID)}`);
+                 if (!addressResponse.ok) throw new Error("Could not load saved shipping address.");
+                 const address = await addressResponse.json();
+                 if (address && Object.keys(address).length > 0) savedShippingAddress = address;
+             } catch (e) {
+                 console.warn("Could not load saved shipping address:", e);
+             }
+         }
+
+         updateCartCount();
+         render();
+        }
+
+        init();
+    </script>
+
+</body>
+</html>

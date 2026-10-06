@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cotidiano Fragrance</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+
+        /* =====================
+           RESET & VARIABLES
+        ===================== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; }
+        
+        :root {
+            --black:    #111111;
+            --white:    #ffffff;
+            --gray-100: #f5f5f5;
+            --gray-200: #e8e8e8;
+            --gray-400: #aaaaaa;
+            --gray-600: #666666;
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body:    'DM Sans', system-ui, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--white);
+            color: var(--black);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        img { display: block; width: 100%; }
+        a   { text-decoration: none; color: inherit; }
+
+
+        /* =====================
+           NAVBAR
+        ===================== */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-200);
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 48px;
+        }
+
+        .navbar__logo img {
+            height: 28px;
+            width: auto;
+        }
+
+        .navbar__links {
+            display: flex;
+            gap: 36px;
+            list-style: none;
+        }
+
+        .navbar__links a {
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--gray-600);
+            transition: color 0.2s;
+        }
+
+        .navbar__links a:hover,
+        .navbar__links a.active { color: var(--black); }
+
+        .navbar__actions {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .navbar__actions a {
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gray-600);
+            transition: color 0.2s;
+        }
+
+        .navbar__actions a:hover { color: var(--black); }
+
+        .cart-link {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            color: var(--black) !important;
+            font-weight: 500;
+        }
+
+        .cart-count {
+            background: var(--black);
+            color: var(--white);
+            font-size: 10px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        /* =====================
+           HERO
+        ===================== */
+        .hero {
+            position: relative;
+            height: 95vh;
+            overflow: hidden;
+        }
+
+        .hero__bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        /* Dark overlay so text stays readable over any photo */
+        .hero__overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.48);
+        }
+
+        .hero__content {
+            position: relative;
+            z-index: 1;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 80px;
+            max-width: 900px;
+        }
+
+        .hero__overline {
+            font-size: 16px;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.55);
+            margin-bottom: 24px;
+        }
+
+        .hero__heading {
+            font-family: var(--font-display);
+            font-size: 104px;
+            font-weight: 400;
+            line-height: 1.08;
+            color: var(--white);
+            letter-spacing: -0.02em;
+            margin-bottom: 28px;
+        }
+
+        .hero__sub {
+            font-size: 20px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.68);
+            max-width: 480px;
+            margin-bottom: 40px;
+        }
+
+        .hero__cta { display: flex; gap: 12px; }
+
+        .btn {
+            font-family: var(--font-body);
+            font-size: 14px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            padding: 14px 32px;
+            border-radius: 2px;
+            cursor: pointer;
+            border: none;
+            transition: opacity 0.2s;
+            display: inline-block;
+            margin-right: 0.75em;
+        }
+
+        .btn:hover { opacity: 0.8; }
+        .btn--white         { background: var(--white); color: var(--black); }
+        .btn--outline-white { background: transparent; border: 1px solid rgba(255,255,255,0.45); color: var(--white); }
+
+
+        /* =====================
+           FILTER BAR
+        ===================== */
+        .filter-bar {
+            border-bottom: 1px solid var(--gray-200);
+            padding: 14px 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            scroll-margin-top: 60px;
+        }
+
+        .filter-pills {
+            display: flex;
+            gap: 8px;
+            list-style: none;
+        }
+
+        .filter-pill {
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 6px 18px;
+            border-radius: 99px;
+            border: 1px solid var(--gray-200);
+            color: var(--gray-600);
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .filter-pill:hover          { border-color: var(--black); color: var(--black); }
+        .filter-pill.active         { background: var(--black); color: var(--white); border-color: var(--black); }
+
+        .sort-select {
+            font-family: var(--font-body);
+            font-size: 11px;
+            letter-spacing: 0.05em;
+            color: var(--black);
+            border: 1px solid var(--gray-200);
+            padding: 7px 14px;
+            border-radius: 2px;
+            background: var(--white);
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .sort-select:hover { border-color: var(--black); }
+
+
+        /* =====================
+           PRODUCTS SECTION
+        ===================== */
+        .products-section { padding: 0 48px 80px; }
+
+        .products-count {
+            font-size: 11px;
+            color: var(--gray-400);
+            letter-spacing: 0.06em;
+            padding: 22px 0 18px;
+        }
+
+        /* 1px gap trick: grid background = border color, cards background = white */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: var(--gray-200);
+            border: 1px solid var(--gray-200);
+        }
+
+
+        /* =====================
+           PRODUCT CARD
+        ===================== */
+        .product-card {
+            background: var(--white);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- Image area with hover overlay --- */
+        .product-card__image {
+            position: relative;
+            aspect-ratio: 3 / 4;
+            overflow: hidden;
+            background: #f0ece6;
+        }
+
+        .product-card__image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.45s ease;
+        }
+
+        .product-card__stock-banner {
+            position: absolute;
+            z-index: 3;
+            top: 10px;
+            left: 10px;
+            padding: 9px 14px;
+            border-left: 3px solid #dc2626;
+            background: rgba(10, 10, 10, 0.82);
+            color: var(--white);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .product-card:hover .product-card__image img {
+            transform: scale(1.05);
+        }
+
+        /* Badge (New / Sale) */
+        .product-card__badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--black);
+            color: var(--white);
+            font-size: 8px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            border-radius: 1px;
+            z-index: 2;
+        }
+
+        .product-card__badge--sale { background: #555; }
+
+        /* Hover overlay — slides up to reveal scent details */
+        .product-card__overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(10, 10, 10, 0.82);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 20px;
+            opacity: 0;
+            transform: translateY(6px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 1;
+        }
+
+        .product-card:hover .product-card__overlay {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .overlay__label {
+            font-size: 8px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.45);
+            margin-bottom: 10px;
+        }
+
+        .overlay__note {
+            display: flex;
+            gap: 6px;
+            align-items: baseline;
+            margin-bottom: 5px;
+        }
+
+        .overlay__note-tier {
+            font-size: 8px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+            min-width: 32px;
+        }
+
+        .overlay__note-value {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.88);
+            font-family: var(--font-display);
+            font-weight: 400;
+            letter-spacing: 0.02em;
+        }
+
+        .overlay__divider {
+            border: none;
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
+            margin: 12px 0;
+        }
+
+        .overlay__size {
+            font-size: 9px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* --- Card info (below image) --- */
+        .product-card__info {
+            padding: 14px 16px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .product-card__name {
+            font-family: var(--font-display);
+            font-size: 22px;
+            font-weight: 500;
+            color: var(--black);
+        }
+
+        .product-card__family {
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gray-400);
+        }
+
+        .product-card__footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 12px;
+        }
+
+        .product-card__price {
+            font-size: 19px;
+            font-weight: 500;
+            color: #dc2626;
+        }
+
+        .product-card__price s {
+            display: block;
+            color: var(--gray-400);
+            font-size: 12px;
+            font-weight: 400;
+        }
+
+        /* "Add to Cart" button — minimal text style */
+        .product-card__add {
+            font-family: var(--font-body);
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--black);
+            background: transparent;
+            border: 1px solid var(--gray-200);
+            padding: 6px 12px;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s, border-color 0.2s;
+            white-space: nowrap;
+        }
+
+        .product-card__add:hover {
+            background: var(--black);
+            color: var(--white);
+            border-color: var(--black);
+        }
+
+        .product-card__add:disabled,
+        .product-card__add:disabled:hover {
+            color: var(--gray-400);
+            background: var(--gray-200);
+            border-color: var(--gray-200);
+            cursor: not-allowed;
+        }
+
+        .auth-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .auth-modal__content {
+            width: min(100%, 440px);
+            padding: 32px;
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.18);
+        }
+
+        .auth-modal__title {
+            margin: 0 0 12px;
+            color: var(--black);
+            font-family: var(--font-display);
+            font-size: 26px;
+            font-weight: 500;
+        }
+
+        .auth-modal__body {
+            margin: 0;
+            color: var(--gray-600);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .auth-modal__actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 28px;
+        }
+
+        .auth-modal__button {
+            min-height: 40px;
+            padding: 0 14px;
+            border: 1px solid var(--gray-200);
+            border-radius: 2px;
+            font-family: var(--font-body);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        .auth-modal__button--browse {
+            color: var(--black);
+            background: var(--white);
+        }
+
+        .auth-modal__button--signin {
+            color: var(--white);
+            background: var(--black);
+            border-color: var(--black);
+        }
+
+        @media (max-width: 480px) {
+            .auth-modal__content { padding: 26px 22px; }
+            .auth-modal__actions { flex-direction: column-reverse; }
+            .auth-modal__button { width: 100%; }
+        }
+
+
+        /* =====================
+           PAGINATION
+        ===================== */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            padding-top: 44px;
+        }
+
+        .page-btn {
+            width: 34px;
+            height: 34px;
+            border: 1px solid var(--gray-200);
+            border-radius: 2px;
+            background: var(--white);
+            font-family: var(--font-body);
+            font-size: 12px;
+            color: var(--gray-600);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .page-btn:hover  { border-color: var(--black); color: var(--black); }
+        .page-btn.active { background: var(--black); color: var(--white); border-color: var(--black); }
+
+
+        /* =====================
+           FOOTER
+        ===================== */
+        .footer {
+            background: var(--black);
+            padding: 32px 48px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+        }
+
+        .footer__links {
+            display: flex;
+            justify-content: center;
+            gap: 28px;
+            list-style: none;
+            padding-bottom: 30px;
+        }
+
+        .footer__links a {
+            font-size: 13px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #555;
+            transition: color 0.2s;
+        }
+
+        .footer__links a:hover { color: var(--white); }
+
+        .footer__copy {
+            font-size: 10px;
+            color: #444;
+            letter-spacing: 0.04em;
+            text-align: center;
+            width: 100%;
+            padding-top: 20px;
+            border-top: 1px solid #222;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- =====================
+         NAVBAR
+    ===================== -->
+    <nav class="navbar">
+        <a href="index.html" class="navbar__logo">
+            <img src="assets/images/cotidiano_logo.png" alt="Cotidiano Fragrance">
+        </a>
+        <ul class="navbar__links">
+            <li><a href="#products" class="active">Shop</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+        <div class="navbar__actions">
+            <a href="account.html">Account</a>
+            <a href="cart.html" class="cart-link">
+                Cart <span class="cart-count" id="cart-count">0</span>
+            </a>
+        </div>
+    </nav>
+
+
+    <!-- =====================
+         HERO
+    ===================== -->
+    <section class="hero">
+        <img class="hero__bg" src="assets/images/hero_image.png" alt="">
+        <div class="hero__overlay"></div>
+        <div class="hero__content">
+            <p class="hero__overline">Cotidiano Fragrance — Est. 2024</p>
+            <h1 class="hero__heading">Fragrances That<br>Speak Your Story</h1>
+            <p class="hero__sub">Thoughtfully crafted scents that inspire confidence, celebrate individuality, and create lasting memories.</p>
+            <div class="hero__cta">
+                <a href="#products" class="btn btn--white">Shop Now</a>
+                <a href="about.html" class="btn btn--outline-white">Our Story</a>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- =====================
+         FILTER BAR
+    ===================== -->
+    <div class="filter-bar" id="products">
+        <ul class="filter-pills" id="filter-pills">
+            <li class="filter-pill active" data-filter="all">All</li>
+            <li class="filter-pill" data-filter="him">For Him</li>
+            <li class="filter-pill" data-filter="her">For Her</li>
+            <li class="filter-pill" data-filter="unisex">Unisex</li>
+        </ul>
+        <select class="sort-select" id="sort-select">
+            <option value="default">Sort: Newest</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="name">Name: A–Z</option>
+        </select>
+    </div>
+
+
+    <!-- =====================
+         PRODUCTS
+    ===================== -->
+    <section class="products-section">
+        <p class="products-count" id="products-count"></p>
+        <div class="products-grid" id="products-grid"></div>
+        <div class="pagination"    id="pagination"></div>
+    </section>
+
+
+    <!-- =====================
+         FOOTER
+    ===================== -->
+    <footer class="footer">
+        <ul class="footer__links">
+            <li><a href="index.html">Shop</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="#">Privacy</a></li>
+        </ul>
+        <p class="footer__copy">© 2026 Cotidiano Fragrance. All rights reserved.</p>
+    </footer>
+
+
+    <script>
+        // ================================================================
+        // PRODUCT DATA — 12 products
+        // ----------------------------------------------------------------
+        // TODO (Backend team): Replace this array with a fetch() call to
+        // your API endpoint that reads products from MS SQL Server.
+        //
+        // Each product needs these exact fields:
+        //   id       — unique number (DB primary key)
+        //   name     — product name
+        //   family   — scent family shown under the name
+        //   price    — price in pesos (number, no commas)
+        //   category — filter value: "him" | "her" | "unisex"
+        //   badge    — "New" | "Sale" | null
+        //   image    — relative path to product image
+        //   notes    — scent notes object with top, heart, base strings
+        //   size     — bottle size string shown on hover
+        //
+        // Example fetch replacement:
+        //   const res = await fetch('/api/products');
+        //   const products = await res.json();
+        //   render();
+        // ================================================================
+        let products = [];
+
+// Load products from database
+async function loadProducts() {
+    try {
+        const res  = await fetch("http://localhost/cotidiano/api/products.php");
+        const data = await res.json();
+
+        // Map database columns to the format the card renderer expects
+        products = data.map(p => ({
+            id: String(p.productID),
+            name:     p.productName,
+            family:   p.family    || "Cotidiano Fragrance",
+            price:    parseFloat(p.price),
+            discountPrice: p.discount_price == null || p.discount_price === "" ? null : parseFloat(p.discount_price),
+            stock:    parseInt(p.stockQuantity) || 0,
+            category: ({ male: "him", female: "her" }[p.category] || p.category || "unisex"),
+            badge:    p.badge     || null,
+            image:    p.Image_url || "",
+            notes: {
+                top:   p.notes_top   || "–",
+                heart: p.notes_heart || "–",
+                base:  p.notes_base  || "–"
+            },
+            size: `${p.size_ML}ml · Extrait de Parfum`
+        }));
+
+        render();
+
+    } catch (err) {
+        console.error("Failed to load products:", err);
+        alert("Products failed to load: " + err.message);
+    }
+}
+        // ================================================================
+
+
+        // --- Page state ---
+        let activeFilter = "all";
+        let activeSort   = "default";
+        const PER_PAGE   = 12;  // show all 12 at once; pagination only appears if filtered
+        let currentPage  = 1;
+
+
+        // --- Filter pills ---
+        document.getElementById("filter-pills").addEventListener("click", (e) => {
+            if (!e.target.classList.contains("filter-pill")) return;
+            document.querySelectorAll(".filter-pill").forEach(p => p.classList.remove("active"));
+            e.target.classList.add("active");
+            activeFilter = e.target.dataset.filter;
+            currentPage  = 1;
+            render();
+        });
+
+
+        // --- Sort dropdown ---
+        document.getElementById("sort-select").addEventListener("change", (e) => {
+            activeSort  = e.target.value;
+            currentPage = 1;
+            render();
+        });
+
+
+        // --- Cart count (reads from localStorage) ---
+        function getCartStorageKey() {
+            const user = JSON.parse(localStorage.getItem("user") || "null");
+            if (!user?.customerID) return "cart_guest";
+
+            const customerKey = `cart_customer_${user.customerID}`;
+            const guestCart = localStorage.getItem("cart_guest");
+            if (!localStorage.getItem(customerKey) && guestCart) {
+                localStorage.setItem(customerKey, guestCart);
+                localStorage.removeItem("cart_guest");
+            }
+            const hasCustomerCart = Object.keys(localStorage).some(key => key.startsWith("cart_customer_"));
+            const legacyCart = localStorage.getItem("cart");
+            if (!localStorage.getItem(customerKey) && !hasCustomerCart && legacyCart) {
+                localStorage.setItem(customerKey, legacyCart);
+                localStorage.removeItem("cart");
+            }
+            return customerKey;
+        }
+
+        function updateCartCount() {
+            const cart  = JSON.parse(localStorage.getItem(getCartStorageKey()) || "[]");
+            const total = cart.reduce((sum, i) => sum + i.quantity, 0);
+            document.getElementById("cart-count").textContent = total;
+        }
+
+
+        // --- Add to cart ---
+        function openAuthModal() {
+            const modal = document.getElementById("auth-modal");
+            modal.style.display = "flex";
+            modal.setAttribute("aria-hidden", "false");
+            modal.querySelector("button").focus();
+        }
+
+        function closeAuthModal() {
+            const modal = document.getElementById("auth-modal");
+            modal.style.display = "none";
+            modal.setAttribute("aria-hidden", "true");
+        }
+
+        function addToCart(productId, event) {
+            event.stopPropagation();
+            const product  = products.find(p => p.id == productId);
+            if (!product) return;
+            if (product.stock <= 0) return;
+            if (!localStorage.getItem("user")) {
+                openAuthModal();
+                return;
+            }
+
+            const cartKey  = getCartStorageKey();
+            const cart     = JSON.parse(localStorage.getItem(cartKey) || "[]");
+            const existing = cart.find(i => i.id === product.id);
+            
+            const currentQty = existing ? existing.quantity : 0;
+            const newQty = currentQty + 1;
+
+            // Check stock availability
+            if (newQty > product.stock) {
+                const btn = event.currentTarget;
+                const original = btn.textContent;
+                btn.textContent = `Only ${product.stock} left`;
+                btn.style.background = "#dc2626";
+                btn.style.color = "var(--white)";
+                btn.style.borderColor = "#dc2626";
+                setTimeout(() => {
+                    btn.textContent = original;
+                    btn.style.background = "";
+                    btn.style.color = "";
+                    btn.style.borderColor = "";
+                }, 2000);
+                return;
+            }
+
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({
+                    id:       product.id,
+                    name:     product.name,
+                    family:   product.family,
+                    price:    product.discountPrice ?? product.price,
+                    image:    product.image,
+                    size:     product.size,
+                    quantity: 1,
+                    stock:    product.stock
+                });
+            }
+
+            localStorage.setItem(cartKey, JSON.stringify(cart));
+            updateCartCount();
+
+            const btn      = event.currentTarget;
+            const original = btn.textContent;
+            btn.textContent       = "Added";
+            btn.style.background  = "var(--black)";
+            btn.style.color       = "var(--white)";
+            btn.style.borderColor = "var(--black)";
+            setTimeout(() => {
+                btn.textContent       = original;
+                btn.style.background  = "";
+                btn.style.color       = "";
+                btn.style.borderColor = "";
+            }, 1200);
+        }
+
+
+        // --- Filter + sort ---
+        function getFilteredProducts() {
+            let list = [...products];
+            if (activeFilter !== "all") list = list.filter(p => p.category === activeFilter);
+            if (activeSort === "price-asc")  list.sort((a, b) => a.price - b.price);
+            if (activeSort === "price-desc") list.sort((a, b) => b.price - a.price);
+            if (activeSort === "name")       list.sort((a, b) => a.name.localeCompare(b.name));
+            return list;
+        }
+
+
+        // --- Render grid + pagination ---
+        function render() {
+            const filtered   = getFilteredProducts();
+            const totalPages = Math.ceil(filtered.length / PER_PAGE);
+            const start      = (currentPage - 1) * PER_PAGE;
+            const pageItems  = filtered.slice(start, start + PER_PAGE);
+            const isLoggedIn = Boolean(localStorage.getItem("user"));
+
+            // Update count label
+            document.getElementById("products-count").textContent =
+                `${filtered.length} product${filtered.length !== 1 ? "s" : ""}`;
+
+            // Build product cards
+            document.getElementById("products-grid").innerHTML = pageItems.map(p => `
+                <div class="product-card">
+
+                    <div class="product-card__image">
+
+                        ${p.badge ? `<span class="product-card__badge ${p.badge === "Sale" ? "product-card__badge--sale" : ""}">${p.badge}</span>` : ""}
+
+                        <img src="${p.image}" alt="${p.name}" onerror="this.style.display='none'">
+                        ${p.stock <= 0 ? `<div class="product-card__stock-banner">OUT OF STOCK</div>` : ""}
+
+                        <!-- Hover overlay: shows scent notes on mouse-over -->
+                        <div class="product-card__overlay">
+                            <p class="overlay__label">Scent Notes</p>
+                            <div class="overlay__note">
+                                <span class="overlay__note-tier">Top</span>
+                                <span class="overlay__note-value">${p.notes.top}</span>
+                            </div>
+                            <div class="overlay__note">
+                                <span class="overlay__note-tier">Heart</span>
+                                <span class="overlay__note-value">${p.notes.heart}</span>
+                            </div>
+                            <div class="overlay__note">
+                                <span class="overlay__note-tier">Base</span>
+                                <span class="overlay__note-value">${p.notes.base}</span>
+                            </div>
+                            <hr class="overlay__divider">
+                            <p class="overlay__size">${p.size}</p>
+                        </div>
+
+                    </div>
+
+                    <div class="product-card__info">
+                        <p class="product-card__name">${p.name}</p>
+                        <p class="product-card__family">${p.family}</p>
+                        <div class="product-card__footer">
+                            <span class="product-card__price">${p.discountPrice !== null && Number.isFinite(p.discountPrice)
+                                ? `<s>₱${p.price.toLocaleString()}</s>₱${p.discountPrice.toLocaleString()}`
+                                : `₱${p.price.toLocaleString()}`}</span>
+                            <button
+                                class="product-card__add"
+                                onclick="addToCart(${p.id}, event)"
+                                aria-label="${p.stock <= 0 ? `${p.name} is out of stock` : isLoggedIn ? `Add ${p.name} to cart` : `Sign in to add ${p.name} to cart`}"
+                                ${p.stock <= 0 ? "disabled" : ""}>
+                                ${p.stock <= 0 ? "Out of Stock" : isLoggedIn ? "Add to Cart" : "Log in to Add"}
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            `).join("");
+
+            // Build pagination (only shows up if more than 1 page)
+            const pag = document.getElementById("pagination");
+            if (totalPages <= 1) { pag.innerHTML = ""; return; }
+            pag.innerHTML = Array.from({ length: totalPages }, (_, i) => `
+                <button class="page-btn ${i + 1 === currentPage ? "active" : ""}"
+                        onclick="goToPage(${i + 1})">${i + 1}</button>
+            `).join("");
+        }
+
+        function goToPage(page) {
+            currentPage = page;
+            render();
+            document.getElementById("products").scrollIntoView({ behavior: "smooth" });
+        }
+
+
+        // --- Run on load ---
+        updateCartCount();
+        loadProducts();
+    </script>
+
+    <div id="auth-modal" class="auth-modal" role="dialog" aria-modal="true"
+         aria-labelledby="auth-modal-title" aria-hidden="true"
+         onclick="if (event.target === this) closeAuthModal()">
+        <div class="auth-modal__content">
+            <h2 id="auth-modal-title" class="auth-modal__title">Sign In Required</h2>
+            <p class="auth-modal__body">Create an account or sign in to add items to your cart.</p>
+            <div class="auth-modal__actions">
+                <button type="button" class="auth-modal__button auth-modal__button--browse"
+                        onclick="closeAuthModal()">Continue Browsing</button>
+                <button type="button" class="auth-modal__button auth-modal__button--signin"
+                        onclick="window.location.href='login.html'">Sign In / Register</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

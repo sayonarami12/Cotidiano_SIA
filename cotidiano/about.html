@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cotidiano Fragrance — About</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+
+        /* =====================
+           RESET & VARIABLES
+        ===================== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --black:    #111111;
+            --white:    #ffffff;
+            --gray-100: #f5f5f5;
+            --gray-200: #e8e8e8;
+            --gray-400: #aaaaaa;
+            --gray-600: #666666;
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body:    'DM Sans', system-ui, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--white);
+            color: var(--black);
+            -webkit-font-smoothing: antialiased;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        img { display: block; width: 100%; }
+        a   { text-decoration: none; color: inherit; }
+
+
+        /* =====================
+           NAVBAR
+        ===================== */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-200);
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 48px;
+        }
+
+        .navbar__logo img {
+            height: 28px;
+            width: auto;
+        }
+
+        .navbar__links {
+            display: flex;
+            gap: 36px;
+            list-style: none;
+        }
+
+        .navbar__links a {
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--gray-600);
+            transition: color 0.2s;
+        }
+
+        .navbar__links a:hover,
+        .navbar__links a.active { color: var(--black); }
+
+        .navbar__actions {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .navbar__actions a {
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gray-600);
+            transition: color 0.2s;
+        }
+
+        .navbar__actions a:hover { color: var(--black); }
+
+        .cart-link {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            color: var(--black) !important;
+            font-weight: 500;
+        }
+
+        .cart-count {
+            background: var(--black);
+            color: var(--white);
+            font-size: 10px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        /* =====================
+           SPLIT LAYOUT
+           Left: sticky image panel
+           Right: scrollable content
+        ===================== */
+        .split {
+            display: grid;
+            grid-template-columns: 45% 1fr;
+            flex: 1;
+        }
+
+
+        /* =====================
+           LEFT — STICKY IMAGE PANEL
+        ===================== */
+        .split__image {
+            position: sticky;
+            top: 60px;
+            height: calc(100vh - 60px);
+            overflow: hidden;
+        }
+
+        /* Hero photo */
+        .split__image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+        }
+
+        /* Gradient overlay — heavier at bottom for text legibility */
+        .split__image__overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to top,
+                rgba(0, 0, 0, 0.90) 0%,
+                rgba(0, 0, 0, 0.30) 45%,
+                rgba(0, 0, 0, 0.05) 100%
+            );
+        }
+
+        /* Heading sits at the bottom of the image */
+        .split__image__content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 60px 44px;
+        }
+
+        .image__overline {
+            font-size: 14px;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.50);
+            margin-bottom: 16px;
+        }
+
+        /* Large single-line heading */
+        .image__heading {
+            font-family: var(--font-display);
+            font-size: 50px;
+            font-weight: 400;
+            line-height: 1.0;
+            color: var(--white);
+            letter-spacing: -0.02em;
+            white-space: nowrap;
+        }
+
+
+        /* =====================
+           RIGHT — SCROLLABLE CONTENT
+        ===================== */
+        .split__content {
+            padding: 72px 64px 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin: 0 6em;
+        }
+
+        /* Pull quote — editorial opener with left border */
+        .pull-quote {
+            font-family: var(--font-display);
+            font-size: 24px;
+            font-style: italic;
+            font-weight: 400;
+            line-height: 1.55;
+            color: var(--black);
+            border-left: 2px solid var(--black);
+            padding-left: 24px;
+            margin-bottom: 36px;
+            letter-spacing: 0.01em;
+        }
+
+        /* Brand story paragraph */
+        .body-text {
+            font-size: 16px;
+            line-height: 1.95;
+            color: var(--gray-600);
+            margin-bottom: 44px;
+        }
+
+        /* Divider */
+        .divider {
+            border: none;
+            border-top: 1px solid var(--gray-200);
+            margin-bottom: 44px;
+        }
+
+        /* Centered signature quote */
+        .center-quote {
+            font-family: var(--font-display);
+            font-size: 30px;
+            font-style: italic;
+            font-weight: 400;
+            color: var(--black);
+            text-align: center;
+            line-height: 1.45;
+            letter-spacing: -0.01em;
+            margin-bottom: 36px;
+        }
+
+        /* Tag pills */
+        .tags {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 64px;
+        }
+
+        .tag {
+            font-size: 10px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            border: 1px solid var(--gray-200);
+            padding: 7px 18px;
+            border-radius: 2px;
+            color: var(--gray-400);
+            transition: all 0.2s;
+        }
+
+        .tag:hover {
+            border-color: var(--black);
+            color: var(--black);
+        }
+
+
+        /* =====================
+           CTA SECTION
+        ===================== */
+        .cta-section {
+            border-top: 1px solid var(--gray-200);
+            padding-top: 52px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            text-align: center;
+        }
+
+        .cta-label {
+            font-size: 11px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--gray-400);
+        }
+
+        .cta-heading {
+            font-family: var(--font-display);
+            font-size: 36px;
+            font-weight: 400;
+            color: var(--black);
+            letter-spacing: -0.01em;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            background: var(--black);
+            color: var(--white);
+            font-family: var(--font-body);
+            font-size: 10px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            padding: 14px 32px;
+            border-radius: 2px;
+            margin-top: 6px;
+            transition: opacity 0.2s;
+        }
+
+        .cta-btn:hover { opacity: 0.8; }
+
+
+        /* =====================
+           FOOTER
+        ===================== */
+        .footer {
+            background: var(--black);
+            padding: 32px 48px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+        }
+
+        .footer__links {
+            display: flex;
+            justify-content: center;
+            gap: 28px;
+            list-style: none;
+            padding-bottom: 20px;
+        }
+
+        .footer__links a {
+            font-size: 13px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #555;
+            transition: color 0.2s;
+        }
+
+        .footer__links a:hover { color: var(--white); }
+
+        .footer__copy {
+            font-size: 10px;
+            color: #444;
+            letter-spacing: 0.04em;
+            text-align: center;
+            width: 100%;
+            padding-top: 20px;
+            border-top: 1px solid #222;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- =====================
+         NAVBAR
+    ===================== -->
+    <nav class="navbar">
+        <a href="index.html" class="navbar__logo">
+            <img src="assets/images/cotidiano_logo.png" alt="Cotidiano Fragrance">
+        </a>
+        <ul class="navbar__links">
+            <li><a href="index.html">Shop</a></li>
+            <li><a href="about.html" class="active">About</a></li>
+        </ul>
+        <div class="navbar__actions">
+            <a href="account.html">Account</a>
+            <a href="cart.html" class="cart-link">
+                Cart <span class="cart-count" id="cart-count">0</span>
+            </a>
+        </div>
+    </nav>
+
+
+    <!-- =====================
+         SPLIT LAYOUT
+    ===================== -->
+    <div class="split">
+
+        <!-- Left — sticky image panel -->
+        <!-- Save your image as assets/images/about.png -->
+        <div class="split__image">
+            <img src="assets/images/about.png" alt="About Cotidiano Fragrance">
+            <div class="split__image__overlay"></div>
+            <div class="split__image__content">
+                <p class="image__overline">Discover Our Story</p>
+                <h1 class="image__heading">About Cotidiano Fragrance</h1>
+            </div>
+        </div>
+
+
+        <!-- Right — scrollable content -->
+        <div class="split__content">
+
+            <!-- Pull quote — editorial opener -->
+            <blockquote class="pull-quote">
+                We believe that scent is more than just a finishing touch —
+                it's a daily expression of who you are.
+            </blockquote>
+
+            <!-- Brand story -->
+            <p class="body-text">
+                Inspired by the word "cotidiano," meaning everyday, our collection
+                is designed to elevate your daily routine with fragrances that are
+                fresh, refined, and effortlessly wearable. From light daytime notes
+                to deeper, lasting impressions, each scent is carefully selected to
+                complement every moment — whether you're heading out, making memories,
+                or simply enjoying the present. We're committed to offering
+                high-quality fragrances that feel luxurious yet accessible, so you
+                can smell confident every single day.
+            </p>
+
+            <hr class="divider">
+
+            <!-- Signature quote -->
+            <div class="center-quote">
+                "Scent as a daily expression<br>of who you are."
+            </div>
+
+            <!-- Tag pills -->
+            <div class="tags">
+                <span class="tag">Everyday Luxury</span>
+                <span class="tag">Premium Fragrance</span>
+                <span class="tag">Est. 2024</span>
+            </div>
+
+            <!-- CTA -->
+            <div class="cta-section">
+                <span class="cta-label">Ready to find your scent?</span>
+                <span class="cta-heading">Explore Our Collection</span>
+                <a href="index.html#products" class="cta-btn">Shop Now</a>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================
+         FOOTER
+    ===================== -->
+    <footer class="footer">
+        <ul class="footer__links">
+            <li><a href="index.html">Shop</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="#">Privacy</a></li>
+        </ul>
+        <p class="footer__copy">© 2026 Cotidiano Fragrance. All rights reserved.</p>
+    </footer>
+
+
+    <script>
+        // ================================================================
+        // CART COUNT
+        // ================================================================
+        function updateCartCount() {
+            const user  = JSON.parse(localStorage.getItem("user") || "null");
+            const key   = user?.customerID ? `cart_customer_${user.customerID}` : "cart_guest";
+            const cart  = JSON.parse(localStorage.getItem(key) || "[]");
+            const total = cart.reduce((sum, i) => sum + i.quantity, 0);
+            document.getElementById("cart-count").textContent = total;
+        }
+
+        updateCartCount();
+    </script>
+
+</body>
+</html>

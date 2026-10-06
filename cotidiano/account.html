@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cotidiano Fragrance — My Account</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+
+        /* =====================
+           RESET & VARIABLES
+        ===================== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --black:    #111111;
+            --white:    #ffffff;
+            --gray-100: #f5f5f5;
+            --gray-200: #e8e8e8;
+            --gray-400: #aaaaaa;
+            --gray-600: #666666;
+            --green:    #16a34a;
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body:    'DM Sans', system-ui, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--white);
+            color: var(--black);
+            -webkit-font-smoothing: antialiased;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        img { display: block; }
+        a   { text-decoration: none; color: inherit; }
+
+
+        /* =====================
+           NAVBAR
+        ===================== */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-200);
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 48px;
+        }
+
+        .navbar__logo img {
+            height: 28px;
+            width: auto;
+        }
+
+        .navbar__links {
+            display: flex;
+            gap: 36px;
+            list-style: none;
+        }
+
+        .navbar__links a {
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--gray-600);
+            transition: color 0.2s;
+        }
+
+        .navbar__links a:hover,
+        .navbar__links a.active { color: var(--black); }
+
+        .navbar__actions {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .navbar__actions a {
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gray-600);
+            transition: color 0.2s;
+        }
+
+        .navbar__actions a:hover { color: var(--black); }
+
+        .cart-link {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            color: var(--black) !important;
+            font-weight: 500;
+        }
+
+        .cart-count {
+            background: var(--black);
+            color: var(--white);
+            font-size: 10px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        /* =====================
+           PAGE WRAPPER
+        ===================== */
+        .page-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 64px 80px;
+            flex: 1;
+            width: 100%;
+        }
+
+
+        /* =====================
+           PAGE HEADER
+        ===================== */
+        .page-header {
+            padding: 40px 0 36px;
+            border-bottom: 1px solid var(--gray-200);
+            margin-bottom: 40px;
+        }
+
+        .page-header h1 {
+            font-family: var(--font-display);
+            font-size: 40px;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+        }
+
+
+        /* =====================
+           SECTION LABELS
+        ===================== */
+        .section-label {
+            font-size: 12px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--gray-400);
+            margin-bottom: 16px;
+        }
+
+
+        /* =====================
+           PROFILE SECTION
+        ===================== */
+        .profile-section {
+            margin-bottom: 52px;
+        }
+
+        .address-section {
+            margin-bottom: 52px;
+        }
+
+        .address-card {
+            border: 1px solid var(--gray-200);
+            border-radius: 2px;
+            padding: 28px 32px;
+        }
+
+        .address-form {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .address-form__field {
+            display: grid;
+            gap: 7px;
+            color: var(--gray-600);
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .address-form__field--wide { grid-column: 1 / -1; }
+
+        .address-form__field input {
+            width: 100%;
+            min-height: 42px;
+            padding: 10px 12px;
+            border: 1px solid var(--gray-200);
+            border-radius: 2px;
+            color: var(--black);
+            font: 14px var(--font-body);
+            letter-spacing: normal;
+            text-transform: none;
+        }
+
+        .address-form__field input:focus {
+            outline: 1px solid var(--black);
+            outline-offset: 1px;
+        }
+
+        .address-form__footer {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 4px;
+        }
+
+        .address-save-btn {
+            padding: 11px 18px;
+            border: 1px solid var(--black);
+            border-radius: 2px;
+            background: var(--black);
+            color: var(--white);
+            font: 700 10px var(--font-body);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        .address-save-btn:disabled { opacity: 0.55; cursor: wait; }
+
+        .address-status {
+            color: var(--green);
+            font-size: 12px;
+        }
+
+        @media (max-width: 600px) {
+            .address-card { padding: 22px 18px; }
+            .address-form { grid-template-columns: 1fr; }
+            .address-form__field--wide,
+            .address-form__footer { grid-column: auto; }
+            .address-form__footer { align-items: flex-start; flex-direction: column; }
+        }
+
+        .profile-card {
+            border: 1px solid var(--gray-200);
+            border-radius: 2px;
+            padding: 28px 32px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--black);
+            color: var(--white);
+            font-size: 18px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            letter-spacing: 0.04em;
+        }
+
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .profile-name {
+            font-family: var(--font-display);
+            font-size: 26px;
+            font-weight: 400;
+        }
+
+        .profile-email {
+            font-size: 14px;
+            color: var(--gray-600);
+            letter-spacing: 0.02em;
+        }
+
+        .profile-meta {
+            display: flex;
+            gap: 8px;
+            margin-top: 6px;
+        }
+
+        .meta-pill {
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            border: 1px solid var(--gray-200);
+            padding: 4px 12px;
+            border-radius: 99px;
+            color: var(--gray-400);
+        }
+
+        /* Sign out — black background to make it prominent */
+        .signout-btn {
+            margin-left: auto;
+            font-family: var(--font-body);
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--white);
+            background: var(--black);
+            border: 1px solid var(--black);
+            padding: 10px 20px;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            flex-shrink: 0;
+        }
+
+        .signout-btn:hover { opacity: 0.75; }
+
+
+        /* =====================
+           ORDERS SECTION
+        ===================== */
+        .orders-section { width: 100%; }
+
+        /* Empty state */
+        .orders-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            padding: 64px 0;
+            text-align: center;
+        }
+
+        .orders-empty p {
+            font-family: var(--font-display);
+            font-size: 24px;
+            color: var(--gray-400);
+        }
+
+        .orders-empty a {
+            font-size: 11px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--black);
+            border-bottom: 1px solid var(--black);
+            padding-bottom: 2px;
+            transition: opacity 0.2s;
+        }
+
+        .orders-empty a:hover { opacity: 0.6; }
+
+
+        /* =====================
+           ORDER CARDS
+           Left border color = status indicator
+        ===================== */
+        .order-card {
+            border: 1px solid var(--gray-200);
+            border-radius: 2px;
+            margin-bottom: 14px;
+            overflow: hidden;
+            width: 100%;
+            border-left-width: 3px;
+        }
+
+        /* Processing — solid black left border */
+        .order-card--processing { border-left-color: var(--black); }
+
+        /* Shipped — mid gray left border */
+        .order-card--shipped    { border-left-color: var(--gray-400); }
+
+        /* Delivered — green left border */
+        .order-card--delivered  { border-left-color: var(--green); }
+
+
+        /* Card header */
+        .order-card__header {
+            padding: 16px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--gray-200);
+            background: var(--gray-100);
+        }
+
+        .order-card__id {
+            font-size: 13px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .order-card__date {
+            font-size: 12px;
+            color: var(--gray-400);
+            margin-top: 4px;
+        }
+
+        .order-payment {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 4px 8px;
+            border: 1px solid var(--gray-200);
+            color: var(--gray-600);
+            font-size: 9px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .confirm-delivery-btn {
+            font-family: var(--font-body);
+            font-size: 10px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--white);
+            background: var(--green);
+            border: 1px solid var(--green);
+            padding: 8px 12px;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+
+        .confirm-delivery-btn:disabled { opacity: 0.6; cursor: wait; }
+
+        /* Status text — replaces pill badge */
+        .order-status {
+            font-size: 11px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .order-status--processing { color: var(--black); }
+        .order-status--shipped    { color: var(--gray-400); }
+        .order-status--delivered  { color: var(--green); }
+
+        /* Green check dot for delivered */
+        .status-check {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--green);
+            color: var(--white);
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+
+        /* Card body — items list */
+        .order-card__body { padding: 18px 22px; }
+
+        .order-item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 15px;
+            margin-bottom: 10px;
+        }
+
+        .order-item-row:last-child { margin-bottom: 0; }
+
+        .order-item-name  { color: var(--black); }
+        .order-item-qty   { font-size: 12px; color: var(--gray-400); margin-left: 6px; }
+        .order-item-price { font-weight: 500; }
+
+
+        /* Card footer — address + total */
+        .order-card__footer {
+            padding: 14px 22px;
+            border-top: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .order-address {
+            font-size: 12px;
+            color: var(--gray-400);
+            line-height: 1.7;
+        }
+
+        .order-total {
+            font-size: 18px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .cancel-order-btn {
+            font-family: var(--font-body);
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #a11;
+            background: var(--white);
+            border: 1px solid #d8aaaa;
+            padding: 8px 12px;
+            border-radius: 2px;
+            cursor: pointer;
+            margin-left: 16px;
+        }
+
+        .cancel-order-btn:hover { background: #fff6f6; }
+
+        .order-footer-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .account-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: rgba(17, 17, 17, 0.52);
+        }
+
+        .account-modal[hidden] { display: none; }
+
+        .account-modal__card {
+            width: min(100%, 390px);
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: 3px;
+            padding: 28px;
+            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        .account-modal__title {
+            font-family: var(--font-display);
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .account-modal__message {
+            color: var(--gray-600);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .account-modal__actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 24px;
+        }
+
+        .account-modal__button {
+            font-family: var(--font-body);
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 10px 16px;
+            border: 1px solid var(--gray-300);
+            border-radius: 2px;
+            background: var(--white);
+            cursor: pointer;
+        }
+
+        .account-modal__button--confirm {
+            color: var(--white);
+            background: var(--black);
+            border-color: var(--black);
+        }
+
+        .delivery-confirm-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 30;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .delivery-confirm-modal.visible { display: flex; }
+
+        .delivery-confirm-modal__card {
+            width: min(100%, 420px);
+            padding: 30px;
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: 3px;
+            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        .delivery-confirm-modal__icon {
+            width: 34px;
+            height: 34px;
+            margin-bottom: 16px;
+            display: grid;
+            place-items: center;
+            border: 1px solid var(--gray-200);
+            border-radius: 50%;
+            color: var(--black);
+            font-family: var(--font-display);
+            font-size: 21px;
+        }
+
+        .delivery-confirm-modal__title {
+            margin-bottom: 10px;
+            color: var(--black);
+            font-family: var(--font-display);
+            font-size: 26px;
+            font-weight: 500;
+        }
+
+        .delivery-confirm-modal__message {
+            color: var(--gray-600);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .delivery-confirm-modal__actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 26px;
+        }
+
+        .delivery-confirm-modal__button {
+            min-height: 40px;
+            padding: 0 14px;
+            border: 1px solid var(--gray-200);
+            border-radius: 2px;
+            font-family: var(--font-body);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        .delivery-confirm-modal__button--cancel {
+            color: var(--black);
+            background: var(--white);
+        }
+
+        .delivery-confirm-modal__button--confirm {
+            color: var(--white);
+            background: var(--black);
+            border-color: var(--black);
+        }
+
+        .delivery-confirm-modal__button:disabled { opacity: 0.55; cursor: wait; }
+
+        @media (max-width: 480px) {
+            .delivery-confirm-modal__card { padding: 24px 20px; }
+            .delivery-confirm-modal__actions { flex-direction: column-reverse; }
+            .delivery-confirm-modal__button { width: 100%; }
+        }
+
+
+        /* =====================
+           FOOTER
+        ===================== */
+        .footer {
+            background: var(--black);
+            padding: 32px 48px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+        }
+
+        .footer__links {
+            display: flex;
+            justify-content: center;
+            gap: 28px;
+            list-style: none;
+            padding-bottom: 20px;
+        }
+
+        .footer__links a {
+            font-size: 13px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #555;
+            transition: color 0.2s;
+        }
+
+        .footer__links a:hover { color: var(--white); }
+
+        .footer__copy {
+            font-size: 10px;
+            color: #444;
+            letter-spacing: 0.04em;
+            text-align: center;
+            width: 100%;
+            padding-top: 20px;
+            border-top: 1px solid #222;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- =====================
+         NAVBAR
+    ===================== -->
+    <nav class="navbar">
+        <a href="index.html" class="navbar__logo">
+            <img src="assets/images/cotidiano_logo.png" alt="Cotidiano Fragrance">
+        </a>
+        <ul class="navbar__links">
+            <li><a href="index.html">Shop</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+        <div class="navbar__actions">
+            <a href="account.html" class="active">Account</a>
+            <a href="cart.html" class="cart-link">
+                Cart <span class="cart-count" id="cart-count">0</span>
+            </a>
+        </div>
+    </nav>
+
+
+    <!-- =====================
+         PAGE CONTENT
+    ===================== -->
+    <div class="page-wrapper">
+
+        <div class="page-header">
+            <h1>My Account</h1>
+        </div>
+
+        <!-- Profile -->
+        <div class="profile-section">
+            <p class="section-label">Profile</p>
+            <div class="profile-card">
+                <div class="avatar"    id="user-avatar"></div>
+                <div class="profile-info">
+                    <div class="profile-name"  id="user-name"></div>
+                    <div class="profile-email" id="user-email"></div>
+                    <div class="profile-meta">
+                        <span class="meta-pill">Member since 2024</span>
+                        <span class="meta-pill" id="order-count-pill"></span>
+                    </div>
+                </div>
+                <button class="signout-btn" id="signout-btn">Sign Out</button>
+            </div>
+        </div>
+
+        <!-- Shipping Address -->
+        <section class="address-section">
+            <p class="section-label">Shipping Address</p>
+            <div class="address-card">
+                <form class="address-form" id="shipping-address-form">
+                    <label class="address-form__field" for="saved-address-label">
+                        Address label
+                        <input id="saved-address-label" name="label" type="text" maxlength="20" placeholder="Home, Office">
+                    </label>
+                    <label class="address-form__field" for="addr-phone">
+                        Phone number
+                        <input id="addr-phone" name="phone" type="tel" maxlength="15" placeholder="09XX XXX XXXX" autocomplete="tel">
+                    </label>
+                    <label class="address-form__field address-form__field--wide" for="saved-address-street">
+                        Street address
+                        <input id="saved-address-street" name="street" type="text" maxlength="200" autocomplete="street-address" required>
+                    </label>
+                    <label class="address-form__field" for="saved-address-city">
+                        City
+                        <input id="saved-address-city" name="city" type="text" maxlength="50" autocomplete="address-level2" required>
+                    </label>
+                    <label class="address-form__field" for="saved-address-province">
+                        Province
+                        <input id="saved-address-province" name="province" type="text" maxlength="50" autocomplete="address-level1" required>
+                    </label>
+                    <label class="address-form__field" for="saved-address-zip">
+                        ZIP code
+                        <input id="saved-address-zip" name="zip" type="text" maxlength="10" autocomplete="postal-code" required>
+                    </label>
+                    <div class="address-form__footer">
+                        <button class="address-save-btn" id="save-address-btn" type="submit">Save Address</button>
+                        <span class="address-status" id="address-status" role="status" aria-live="polite"></span>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Orders -->
+        <div class="orders-section">
+            <p class="section-label">My Orders</p>
+            <div id="orders-list"></div>
+        </div>
+
+    </div>
+
+
+    <!-- =====================
+         FOOTER
+    ===================== -->
+    <footer class="footer">
+        <ul class="footer__links">
+            <li><a href="index.html">Shop</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="#">Privacy</a></li>
+        </ul>
+        <p class="footer__copy">© 2026 Cotidiano Fragrance. All rights reserved.</p>
+    </footer>
+
+    <div class="account-modal" id="account-modal" hidden>
+        <div class="account-modal__card" role="dialog" aria-modal="true" aria-labelledby="account-modal-title">
+            <h2 class="account-modal__title" id="account-modal-title"></h2>
+            <p class="account-modal__message" id="account-modal-message"></p>
+            <div class="account-modal__actions">
+                <button class="account-modal__button" id="account-modal-cancel">Close</button>
+                <button class="account-modal__button account-modal__button--confirm" id="account-modal-confirm" hidden>Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="delivery-confirm-modal" id="delivery-confirm-modal" aria-hidden="true">
+        <div class="delivery-confirm-modal__card" role="dialog" aria-modal="true"
+             aria-labelledby="delivery-confirm-title" aria-describedby="delivery-confirm-message">
+            <div class="delivery-confirm-modal__icon" aria-hidden="true">?</div>
+            <h2 class="delivery-confirm-modal__title" id="delivery-confirm-title">Confirm Delivery</h2>
+            <p class="delivery-confirm-modal__message" id="delivery-confirm-message">
+                Please confirm that you have received this order. This action cannot be undone.
+            </p>
+            <div class="delivery-confirm-modal__actions">
+                <button class="delivery-confirm-modal__button delivery-confirm-modal__button--cancel"
+                        id="delivery-confirm-cancel" type="button" onclick="closeConfirmModal()">Cancel</button>
+                <button class="delivery-confirm-modal__button delivery-confirm-modal__button--confirm"
+                        id="delivery-confirm-submit" type="button" onclick="executeConfirmDelivery()">Yes, I Received It</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // ================================================================
+        // AUTH GUARD
+        // ----------------------------------------------------------------
+        // TODO (Backend team): Replace with your session/token check.
+        // ================================================================
+        const user = JSON.parse(localStorage.getItem("user") || "null");
+        if (!user) window.location.href = "login.html";
+        const displayName = [user?.firstName, user?.lastName].filter(Boolean).join(" ") || user?.name || user?.email || "Customer";
+        let pendingOrderId = null;
+        let isConfirmingDelivery = false;
+
+        function showAccountModal(title, message, isConfirmation = false) {
+            const modal = document.getElementById("account-modal");
+            const confirmButton = document.getElementById("account-modal-confirm");
+            document.getElementById("account-modal-title").textContent = title;
+            document.getElementById("account-modal-message").textContent = message;
+            confirmButton.hidden = !isConfirmation;
+            modal.hidden = false;
+
+            return new Promise(resolve => {
+                const close = result => {
+                    modal.hidden = true;
+                    document.getElementById("account-modal-cancel").onclick = null;
+                    confirmButton.onclick = null;
+                    resolve(result);
+                };
+                document.getElementById("account-modal-cancel").onclick = () => close(false);
+                confirmButton.onclick = () => close(true);
+            });
+        }
+
+
+        // ================================================================
+        // CART COUNT
+        // ================================================================
+        function updateCartCount() {
+            const user  = JSON.parse(localStorage.getItem("user") || "null");
+            const key   = user?.customerID ? `cart_customer_${user.customerID}` : "cart_guest";
+            const cart  = JSON.parse(localStorage.getItem(key) || "[]");
+            const total = cart.reduce((sum, i) => sum + i.quantity, 0);
+            document.getElementById("cart-count").textContent = total;
+        }
+
+
+        // ================================================================
+        // HELPERS
+        // ================================================================
+
+        // Generate initials from full name
+        function getInitials(name) {
+            const parts = name.trim().split(" ");
+            if (parts.length === 1) return parts[0][0].toUpperCase();
+            return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+        }
+
+        // Returns status HTML — left border driven, no pill badges
+        function getStatusHTML(status) {
+            if (status === "Processing") {
+                return `
+                    <div class="order-status order-status--processing">
+                        Processing
+                    </div>
+                `;
+            }
+            if (status === "Shipped") {
+                return `
+                    <div class="order-status order-status--shipped">
+                        Shipped
+                    </div>
+                `;
+            }
+            if (status === "Delivered") {
+                return `
+                    <div class="order-status order-status--delivered">
+                        <div class="status-check">✓</div>
+                        Delivered
+                    </div>
+                `;
+            }
+            return `<div class="order-status order-status--processing">${status}</div>`;
+        }
+
+        // Returns the CSS modifier class for the order card border
+        function getCardClass(status) {
+            if (status === "Processing") return "order-card--processing";
+            if (status === "Shipped")    return "order-card--shipped";
+            if (status === "Delivered")  return "order-card--delivered";
+            return "order-card--processing";
+        }
+
+
+        // ================================================================
+        // RENDER PROFILE
+        // ================================================================
+        async function renderProfile() {
+            try {
+                if (!user.customerID) {
+                    document.getElementById("user-avatar").textContent = getInitials(displayName);
+                    document.getElementById("user-name").textContent = displayName;
+                    document.getElementById("user-email").textContent = user.email || "";
+                    document.getElementById("order-count-pill").textContent = "Customer account required";
+                    return;
+                }
+                const res = await fetch(`http://localhost/cotidiano/api/orders.php?customerID=${user.customerID}`);
+                const orders = await res.json();
+                const orderCount = (orders && Array.isArray(orders)) ? orders.length : 0;
+                
+                document.getElementById("user-avatar").textContent  = getInitials(displayName);
+                document.getElementById("user-name").textContent    = displayName;
+                document.getElementById("user-email").textContent   = user.email;
+                document.getElementById("order-count-pill").textContent =
+                    `${orderCount} order${orderCount !== 1 ? "s" : ""} placed`;
+            } catch (err) {
+                console.error("Failed to load profile:", err);
+                document.getElementById("user-avatar").textContent  = getInitials(displayName);
+                document.getElementById("user-name").textContent    = displayName;
+                document.getElementById("user-email").textContent   = user.email;
+                document.getElementById("order-count-pill").textContent = "0 orders placed";
+            }
+        }
+
+
+        // ================================================================
+        // RENDER ORDERS
+        // ================================================================
+        async function renderOrders() {
+            try {
+                if (!user.customerID) {
+                    document.getElementById("orders-list").innerHTML = `
+                        <div class="orders-empty">
+                            <p>Sign in with a customer account to view orders.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                const res = await fetch(`http://localhost/cotidiano/api/orders.php?customerID=${user.customerID}`);
+                const orders = await res.json();
+                const list = document.getElementById("orders-list");
+
+                if (!orders || orders.length === 0) {
+                    list.innerHTML = `
+                        <div class="orders-empty">
+                            <p>No orders yet.</p>
+                            <a href="index.html">Start Shopping</a>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Sort: Processing → Shipped → Delivered
+                const sorted = [...orders].sort((a, b) => {
+                    const rank = { "Processing": 0, "Shipped": 1, "Delivered": 2 };
+                    return (rank[a.status] ?? 0) - (rank[b.status] ?? 0);
+                });
+
+                list.innerHTML = sorted.map(order => `
+                    <div class="order-card ${getCardClass(order.status)}">
+
+                        <div class="order-card__header">
+                            <div>
+                                <div class="order-card__id">#${order.orderId}</div>
+                                <div class="order-card__date">${order.date}</div>
+                                <div class="order-payment">${order.paymentMethod === "Cash on Delivery" || order.paymentMethod === "Cash" ? "COD" : order.paymentMethod || "Payment"} · ${order.paymentStatus || "Pending"}</div>
+                            </div>
+                            ${getStatusHTML(order.status)}
+                        </div>
+
+                        <div class="order-card__body">
+                            ${order.items.map(item => `
+                                <div class="order-item-row">
+                                    <span>
+                                        <span class="order-item-name">${item.name}</span>
+                                        <span class="order-item-qty">x${item.quantity}</span>
+                                    </span>
+                                    <span class="order-item-price">
+                                        ₱${(item.price * item.quantity).toLocaleString()}
+                                    </span>
+                                </div>
+                            `).join("")}
+                        </div>
+
+                        <div class="order-card__footer">
+                            <div class="order-address">
+                                ${order.shippingAddress.street},
+                                ${order.shippingAddress.city},
+                                ${order.shippingAddress.province}
+                                · ${order.shippingAddress.zip}
+                                · ${order.shippingAddress.phone}
+                            </div>
+                            <div class="order-footer-actions">
+                                ${user.customerID && order.canCancel ? `<button class="cancel-order-btn" onclick="cancelOrder(${order.orderId})">Cancel Order</button>` : ""}
+                                ${user.customerID && order.status === "Shipped" ? `<button class="confirm-delivery-btn" onclick="confirmDelivery(${order.orderId})">Confirm Delivery</button>` : ""}
+                                <div class="order-total">₱${order.total.toLocaleString()}</div>
+                            </div>
+                        </div>
+
+                    </div>
+                `).join("");
+            } catch (err) {
+                console.error("Failed to load orders:", err);
+                document.getElementById("orders-list").innerHTML = `
+                    <div class="orders-empty">
+                        <p>Failed to load orders.</p>
+                    </div>
+                `;
+            }
+        }
+
+        async function loadShippingAddress() {
+            if (!user?.customerID) return;
+
+            try {
+                const response = await fetch(`http://localhost/cotidiano/api/address.php?customerID=${encodeURIComponent(user.customerID)}`);
+                if (!response.ok) throw new Error("Could not load saved address.");
+                const address = await response.json();
+                if (!address || Object.keys(address).length === 0) return;
+
+                document.getElementById("saved-address-label").value = address.label || "";
+                document.getElementById("addr-phone").value = address.phoneNumber || "";
+                document.getElementById("saved-address-street").value = address.street || "";
+                document.getElementById("saved-address-city").value = address.city || "";
+                document.getElementById("saved-address-province").value = address.province || "";
+                document.getElementById("saved-address-zip").value = address.zip || "";
+            } catch (err) {
+                console.error("Failed to load shipping address:", err);
+                document.getElementById("address-status").textContent = "Could not load saved address.";
+            }
+        }
+
+        async function saveShippingAddress(event) {
+            event.preventDefault();
+            if (!user?.customerID) return;
+
+            const button = document.getElementById("save-address-btn");
+            const status = document.getElementById("address-status");
+            const payload = {
+                customerID: user.customerID,
+                label: document.getElementById("saved-address-label").value.trim(),
+                phone: document.getElementById("addr-phone").value.trim(),
+                street: document.getElementById("saved-address-street").value.trim(),
+                city: document.getElementById("saved-address-city").value.trim(),
+                province: document.getElementById("saved-address-province").value.trim(),
+                zip: document.getElementById("saved-address-zip").value.trim()
+            };
+
+            button.disabled = true;
+            button.textContent = "Saving...";
+            status.textContent = "";
+            try {
+                const response = await fetch("http://localhost/cotidiano/api/address.php", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+                if (!response.ok || !result.success) throw new Error(result.error || "Could not save address.");
+                button.textContent = "Saved!";
+                status.textContent = "Your default shipping address has been saved.";
+            } catch (err) {
+                button.textContent = "Save Address";
+                status.textContent = err.message;
+            } finally {
+                button.disabled = false;
+                if (button.textContent === "Saved!") {
+                    window.setTimeout(() => { button.textContent = "Save Address"; }, 1800);
+                }
+            }
+        }
+
+        document.getElementById("shipping-address-form").addEventListener("submit", saveShippingAddress);
+
+        async function cancelOrder(orderID) {
+            if (!user.customerID) {
+                await showAccountModal("Customer account required", "Only the customer who placed this order can cancel it.");
+                return;
+            }
+
+            const confirmed = await showAccountModal("Cancel pending order?", "This will cancel the order and return its items to stock.", true);
+            if (!confirmed) return;
+
+            try {
+                const res = await fetch("http://localhost/cotidiano/api/cancel_order.php", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ orderID, customerID: user.customerID })
+                });
+                const result = await res.json();
+                if (!res.ok || !result.success) throw new Error(result.error || "Unable to cancel order");
+                await renderOrders();
+                await renderProfile();
+            } catch (err) {
+                await showAccountModal("Unable to cancel order", err.message);
+            }
+        }
+
+        function confirmDelivery(orderID) {
+            if (!user?.customerID || !Number.isInteger(Number(orderID)) || Number(orderID) < 1) return;
+            pendingOrderId = Number(orderID);
+            const modal = document.getElementById("delivery-confirm-modal");
+            modal.classList.add("visible");
+            modal.setAttribute("aria-hidden", "false");
+            document.getElementById("delivery-confirm-cancel").focus();
+        }
+
+        function closeConfirmModal() {
+            if (isConfirmingDelivery) return;
+            const modal = document.getElementById("delivery-confirm-modal");
+            modal.classList.remove("visible");
+            modal.setAttribute("aria-hidden", "true");
+            pendingOrderId = null;
+        }
+
+        async function executeConfirmDelivery() {
+            if (!pendingOrderId || !user?.customerID || isConfirmingDelivery) return;
+            const orderID = pendingOrderId;
+            const submitButton = document.getElementById("delivery-confirm-submit");
+            isConfirmingDelivery = true;
+            submitButton.disabled = true;
+            submitButton.textContent = "Confirming...";
+
+            try {
+                const response = await fetch("http://localhost/cotidiano/api/confirm_delivery.php", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ orderID, customerID: user.customerID })
+                });
+                const result = await response.json();
+                if (!response.ok || !result.success) throw new Error(result.error || "Unable to confirm delivery.");
+                const modal = document.getElementById("delivery-confirm-modal");
+                modal.classList.remove("visible");
+                modal.setAttribute("aria-hidden", "true");
+                pendingOrderId = null;
+                await renderOrders();
+                await renderProfile();
+                await showAccountModal("Delivery confirmed", "Thank you for confirming that you received this order.");
+            } catch (err) {
+                const modal = document.getElementById("delivery-confirm-modal");
+                modal.classList.remove("visible");
+                modal.setAttribute("aria-hidden", "true");
+                pendingOrderId = null;
+                await showAccountModal("Unable to confirm delivery", err.message);
+            } finally {
+                isConfirmingDelivery = false;
+                submitButton.disabled = false;
+                submitButton.textContent = "Yes, I Received It";
+            }
+        }
+
+
+        // ================================================================
+        // SIGN OUT
+        // ----------------------------------------------------------------
+        // TODO (Backend team): Add a fetch() POST to your logout endpoint
+        // before clearing localStorage if using server-side sessions.
+        // ================================================================
+        document.getElementById("signout-btn").addEventListener("click", () => {
+            localStorage.removeItem("user");
+            window.location.href = "login.html";
+        });
+
+
+        // ================================================================
+        // INIT
+        // ================================================================
+        updateCartCount();
+        renderProfile();
+        renderOrders();
+        loadShippingAddress();
+    </script>
+
+</body>
+</html>
